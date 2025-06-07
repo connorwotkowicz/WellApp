@@ -8,5 +8,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "pg": "^8.16.0",
+    "sass": "^1.89.1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.4"
+  }
 }

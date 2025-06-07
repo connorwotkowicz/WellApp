@@ -17,3 +17,31 @@ export async function getProvider(id: string) {
   if (!res.ok) throw new Error('Failed to fetch provider');
   return res.json();
 }
+
+export async function getAllProviders() {
+  const res = await fetch(`${API_BASE}/providers`);
+  if (!res.ok) throw new Error('Failed to fetch providers');
+  return res.json();
+}
+
+export async function getAllBookings() {
+  const res = await fetch(`${API_BASE}/bookings`);
+  if (!res.ok) throw new Error('Failed to fetch bookings');
+  return res.json();
+}
+
+export async function updateProviderStatus(id: string, status: string) {
+  const res = await fetch(`${API_BASE}/providers/${id}/status`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ status }),
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to update provider status');
+  }
+
+  return res.json();
+}
