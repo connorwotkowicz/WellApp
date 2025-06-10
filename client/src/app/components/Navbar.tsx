@@ -1,43 +1,31 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation'; 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-import { Search } from 'lucide-react';
+import { Search, Home } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
-import { useTheme } from '../utils/useTheme';
-import SearchBar from './SearchBar';
+import { useTheme } from '../context/ThemeContext';
 
 const defaultProfilePic = '/default-profile.png';
 
-interface NavbarProps {
-  isAuthenticated: boolean;
-  onSearch?: (query: string) => void;
-  allItems?: any[];
-}
-
-const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, onSearch, allItems = [] }) => {
+const Navbar: React.FC = () => {
   const router = useRouter();
-  const pathname = usePathname();
+  const pathname = usePathname(); 
 
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-  const [isSearchVisible, setSearchVisible] = useState(false);
   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
   const profileTimeout = useRef<NodeJS.Timeout | null>(null);
   const profileRef = useRef<HTMLDivElement | null>(null);
-  const { user, logout } = useContext(AuthContext);
+
+  const { user, logout } = useContext(AuthContext);  
   const { theme, toggleTheme } = useTheme();
 
   const handleLogout = () => {
     logout();
     router.push('/login');
-  };
-
-  const toggleSearch = () => {
-    setSearchVisible((prev) => !prev);
-    setDropdownVisible((prev) => !prev);
   };
 
   useEffect(() => {
@@ -53,43 +41,47 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, onSearch, allItems = [
   useEffect(() => {
     const content = document.querySelector('.page-content');
     if (content) {
-      content.classList.toggle('blurred', isSearchVisible);
-      document.body.style.overflow = isSearchVisible ? 'hidden' : 'auto';
+      content.classList.remove('blurred');
+      document.body.style.overflow = 'auto';
     }
-  }, [isSearchVisible]);
-
-  useEffect(() => {
-    const content = document.querySelector('.page-content');
-    if (content) content.classList.remove('blurred');
-    document.body.style.overflow = 'auto';
   }, [pathname]);
 
-  const closeSearchImmediately = () => {
-    setSearchVisible(false);
-    setDropdownVisible(false);
-    const content = document.querySelector('.page-content');
-    if (content) content.classList.remove('blurred');
-    document.body.style.overflow = 'auto';
-  };
+  
+  if (pathname?.startsWith("/admin")) {
+    return null; 
+  }
 
   return (
     <>
       <nav className='navbar'>
         <div className='nav-container'>
           <div className='nav-left'>
-            <Link href='/' className='nav-logo'>WellnessApp</Link>
+         <Link href='/' className='nav-logo'>
+  <span className="logo-full">WellnessApp</span>
+  <span className="logo-short">w2k25</span>
+</Link>
+
           </div>
 
-          <div className='nav-right'>
-            <button className='nav-button-search-icon' onClick={toggleSearch} aria-label='Toggle Search'>
-              <Search size={16} />
-            </button>
+          <div className='nav-m-right'>
+   <div className='nav-m-right'>
+ <Link href='/' className='home-link' aria-label='Go to Home'>
+    <Home className="home-icon" />
+  </Link>
+  <Link href='/services' className='nav-link'>Services</Link>
+  <Link href='/bookings' className='nav-link'>Bookings</Link>
+  <Link href='/providers' className='nav-link'>Providers</Link>
+</div>
+          </div>
+
+        <div className='nav-right'>
+      
 
             <button className='theme-toggle-button' onClick={toggleTheme} aria-label='Toggle Theme'>
               {theme === 'dark' ? '☀︎' : '☾'}
             </button>
 
-            {isAuthenticated ? (
+            {user ? (
               <div
                 className='account-dropdown'
                 onMouseEnter={() => {
@@ -104,19 +96,17 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, onSearch, allItems = [
                 ref={profileRef}
               >
                 <img
-                  src={(user?.profilePic as string) || defaultProfilePic}
+                  src={user.profilePic || defaultProfilePic}
                   alt='Profile'
                   className='account-avatar'
                 />
-                {profileDropdownVisible && (
-                  <div className='account-dropdown-menu show'>
-                    <Link href='/account' className='dropdown-link'>Account</Link>
-                    {user?.user_role === 'admin' && (
-                      <Link href='/admin/dashboard' className='dropdown-link'>Admin Dashboard</Link>
-                    )}
-                    <button onClick={handleLogout} className='dropdown-link logout-button'>Logout</button>
-                  </div>
-                )}
+                <div className={`account-dropdown-menu ${profileDropdownVisible ? 'show' : ''}`}>
+                  <Link href='/account' className='dropdown-link'>Account</Link>
+                  {user.user_role === 'admin' && (
+                    <Link href='/admin' className='dropdown-link'>Admin Dashboard</Link>
+                  )}
+                  <button onClick={handleLogout} className='dropdown-link logout-button'>Logout</button>
+                </div>
               </div>
             ) : (
               <>
@@ -127,24 +117,6 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, onSearch, allItems = [
           </div>
         </div>
       </nav>
-
-      {isSearchVisible && (
-        <div className='nav-search-dropdown'>
-          <div className='search-inner'>
-            <SearchBar
-              onSearch={onSearch ?? (() => {})}
-              allItems={allItems}
-              onCloseSearch={closeSearchImmediately}
-            />
-          </div>
-        </div>
-      )}
-
-      {isDropdownVisible && (
-        <div className='dropdown show'>
-          <div className='dropdown-links'></div>
-        </div>
-      )}
     </>
   );
 };

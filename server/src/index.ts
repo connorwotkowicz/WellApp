@@ -1,15 +1,22 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 
 
 import providerRoutes from './routes/providerRoutes';
 import serviceRoutes from './routes/serviceRoutes';
-import userRoutes from './routes/userRoutes';
+import paymentRoutes from './routes/paymentRoutes';
+
 import bookingRoutes from './routes/bookingRoutes';
+import authRoutes from "./routes/authRoutes";
+const checkoutRoutes = require('./routes/checkout');
+const userRoutes = require('./routes/userRoutes')
 
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-dotenv.config();
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -25,6 +32,9 @@ app.use('/api/providers', providerRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use("/api/auth", authRoutes);
+app.use('/api/checkout', checkoutRoutes);
+app.use('/api/payment', paymentRoutes); 
 
 
 

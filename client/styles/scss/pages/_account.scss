@@ -1,0 +1,207 @@
+/* =======================================
+   ACCOUNT PAGE WRAPPER
+======================================= */
+.account-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-color);
+
+  .stripe {
+    width: 100%;
+    padding-top: 2rem;
+
+    &.default {
+      background-color: #fafcfe;
+    }
+
+    &.grey {
+      background: linear-gradient(135deg, #dfe9f3 0%, #ffffff 100%);
+    }
+
+    &.greeting-stripe {
+      padding-top: 1rem;
+      padding-bottom: 1.5rem;
+    }
+  }
+}
+
+
+.contact-info {
+  margin-left: 8px;
+}
+
+
+/* =======================================
+   ACCOUNT TITLE & SIGNOUT
+======================================= */
+.account-title {
+  color: black;
+  font-weight: normal;
+  font-size: 1.2rem;
+}
+
+button.signout-button {
+  align-self: flex-end;
+  margin-bottom: 1.5rem;
+  margin-right: 0;
+  font-size: 0.9rem;
+  color: black;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+
+/* =======================================
+   ACCOUNT WRAPPER & GREETING
+======================================= */
+.account-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+
+  &.greeting-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+
+  .greeting {
+    font-size: 2rem;
+    font-weight: 400;
+    margin: 0;
+    color: black;
+  }
+
+  .sub-greeting {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+
+/* =======================================
+   BOOKINGS SECTION
+======================================= */
+.booking-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+
+  .booking-card {
+    // background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--primary-accent);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    color: black;
+    background-color: transparent;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+    
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.01);
+    }
+
+    strong {
+      font-size: 1.1rem;
+      color: black;
+    }
+
+    span {
+      display: block;
+      margin-top: 0.25rem;
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+  }
+}
+
+
+.account-wrapper {
+
+    h3 {
+        color: black;
+    }
+}
+
+
+/* =======================================
+   ACCOUNT SETTINGS SECTION
+======================================= */
+.account-settings {
+  margin-bottom: 4rem;
+
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: black;
+    font-weight: 400;
+  }
+
+  .settings-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 3rem;
+    row-gap: 2rem;
+
+    .settings-block {
+      background: none;
+      padding: 0;
+      box-shadow: none;
+      border-radius: 0;
+      
+
+      h4 {
+        font-size: 1.2rem;
+        font-weight: 430;
+        margin-bottom: 0.25rem;
+        color: black;
+      }
+
+      p {
+        font-size: 0.8rem;
+        margin: 0;
+        color: black;
+        line-height: 1.6;
+      
+      
+      }
+
+      a {
+        display: inline-block;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--primary-accent);
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+        
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      &.full-width {
+        grid-column: 1 / -1;
+        margin-top: 1rem;
+      }
+    }
+  }
+}

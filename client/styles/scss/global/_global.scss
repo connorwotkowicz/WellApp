@@ -1,0 +1,357 @@
+@use "./theme";
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+.desktop-nav {
+  display: block;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.mobile-nav {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+a {
+  font-weight: 500;
+  color: var(--text-color);
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: #b6b6b6;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+
+  a:hover {
+    color: #747bff;
+  }
+
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* Global button styles */
+.action-btn {
+  background-color: transparent; /* Transparent background */
+  color: black; /* Black text */
+  font-size: 16px;
+  padding: 10px 20px;
+  border: 2px solid #000000; /* Black border */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  margin-right: 10px; /* Add some space between buttons */
+}
+
+/* Edit button specific style */
+.edit-btn {
+  border-color: #606f80; /* Blue border for edit */
+  color: #47688c; /* Blue text for edit */
+}
+
+.edit-btn:hover {
+  color: #0056b3; /* Darker blue text on hover */
+  border-color: #0056b3; /* Darker blue border on hover */
+}
+
+/* Delete button specific style */
+.delete-btn {
+  border-color: #875a5e; /* Red border for delete */
+  color: #5f363b; /* Red text for delete */
+}
+
+.delete-btn:hover {
+  color: #c82333; /* Darker red text on hover */
+  border-color: #c82333; /* Darker red border on hover */
+}
+
+/* Button hover effect */
+.action-btn:hover {
+  transform: none; /* Remove the scale effect, just color change */
+}
+
+/* Disabled state */
+.action-btn:disabled {
+  border-color: #ccc;
+  color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Modal Wrapper */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Dark overlay */
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-out forwards; /* Animation to fade in */
+}
+
+.modal.show {
+  display: flex; /* Show modal when the class 'show' is added */
+}
+
+.modal-content {
+  background-color: var(--bg-color);
+  padding: 60px 60px 70px 60px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+}
+
+.modal-header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 15px;
+}
+
+.modal-body input,
+.modal-body select {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #c7c7cc;
+  border-radius: 10px;
+  background: #ffffff;
+  color: black;
+
+  transition: border 0.2s ease;
+
+  &:focus {
+    border-color: #51677d;
+    outline: none;
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.back-modal-button {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  width: 100%;
+  margin-top: 1rem;
+  max-width: 200px;
+  border-radius: 4px;
+  padding: 0.7rem;
+  background: #000000;
+  color: white;
+  font-weight: 400;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.3s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 300%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent 30%, #ff3cac 45%, #784ba0 50%, #2b86c5 55%, transparent 70%);
+    opacity: 0;
+    transition: none;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  &:hover::before {
+    animation: shiny-wipe 1.2s ease-out forwards;
+    opacity: 1;
+  }
+
+  &:hover {
+    background-color: #000000;
+  }
+}
+
+.book-modal-button {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  align-self: center;
+  width: 100% !important; // Ensures it takes full width inside the card
+  max-width: 600px !important;
+  border-radius: 4px;
+  padding: 0.7rem;
+
+  &:hover {
+    background-color: var(--primary-accent-dark);
+  }
+}
+
+.modal-button,
+.book-modal-button {
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  width: 100%;
+  max-width: 200px;
+  border-radius: 4px;
+  padding: 0.7rem;
+  background: #000000;
+  color: white;
+  font-weight: 400;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.3s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 300%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent 30%, #ff3cac 45%, #784ba0 50%, #2b86c5 55%, transparent 70%);
+    opacity: 0;
+    transition: none;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  &:hover::before {
+    animation: shiny-wipe 1.2s ease-out forwards;
+    opacity: 1;
+  }
+
+  &:hover {
+    background-color: #000000;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #000;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shiny-wipe {
+  0% {
+    left: -150%;
+    opacity: 1;
+  }
+  50% {
+    left: 100%;
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+.sign-button:hover::before,
+.reg-button:hover::before,
+.checkout-button:hover::before,
+.return-button:hover::before {
+  animation: shiny-wipe 1.2s ease-out forwards;
+  opacity: 1;
+}

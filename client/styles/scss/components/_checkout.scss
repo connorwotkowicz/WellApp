@@ -1,0 +1,667 @@
+.checkout-page {
+  background-color: #ffffff;
+  color: black;
+  min-height: 100vh;
+  padding: 4rem 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .checkout-container {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    // padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+  }
+
+  .checkout-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+
+    .checkout-title {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin: 0;
+      color: black;
+    }
+
+    .order-summary-toggle {
+      background: none;
+      border: none;
+      font-weight: 500;
+      color: #0071e3;
+      font-size: 0.95rem;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .checkout-subtitle {
+    margin-top: 6rem;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .full-width-divider {
+    width: 100%;
+    height: 1px;
+    background: #d1d1d1;
+    margin: 0;
+  }
+
+  .full-width-divider-2 {
+    width: 100%;
+    max-width: 600px;
+    height: 1px;
+    background: #d1d1d1;
+    margin: 2rem 0 1rem;
+    align-self: flex-start;
+  }
+
+  .checkout-content {
+    border-radius: 12px;
+    padding-right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    margin: 0;
+
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .cart-item {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+
+        .item-image {
+          width: 80px;
+          height: 80px;
+          background: #f0f0f0;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+
+        .item-details {
+          display: flex;
+          flex-direction: column;
+          gap: 0.2rem;
+
+          p {
+            margin: 0;
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+
+    .shipping-address {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      h3 {
+        font-size: 1.3rem;
+        font-weight: 600;
+      }
+
+      label {
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      input {
+        padding: 0.8rem;
+        border: 1px solid #000000;
+        border-radius: 8px;
+        background: white;
+        color: black;
+        font-size: 1rem;
+      }
+    }
+
+    .order-total {
+      display: flex;
+      justify-content: flex-end;
+      border-top: 1px solid #d1d1d1;
+      padding-top: 1rem;
+
+      h4 {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .form-group {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #c7c7cc;
+      border-radius: 10px;
+      background: white;
+      transition: border 0.2s ease;
+      color: black;
+
+      &:focus {
+        border-color: #51677d;
+        outline: none;
+      }
+    }
+  }
+
+  .form-inline {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    max-width: 600px;
+
+    .form-group {
+      flex: 1;
+    }
+  }
+
+  .form-wrapper {
+    max-width: 520px;
+    width: 100%;
+  }
+
+
+  .date-continue-btn {
+    margin-top: 10px !important
+  }
+
+  .continue-btn,
+  .pay-button, .date-continue-btn {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 4px;
+    padding: 1rem 2rem;
+    background: #000000;
+    color: white;
+    font-weight: 400;
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background 0.3s ease;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 300%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent 30%, #ff3cac 45%, #784ba0 50%, #2b86c5 55%, transparent 70%);
+      opacity: 0;
+      transition: none;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    &:hover::before {
+      animation: shiny-wipe 1.2s ease-out forwards;
+      opacity: 1;
+    }
+
+    &:hover {
+      background-color: #000000;
+    }
+
+    &:disabled {
+      background-color: #e0e0e0;
+      color: #aaa;
+      cursor: not-allowed;
+
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  .summary-items {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .edit-link {
+      font-size: 0.85rem;
+      color: #0071e3;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .order-summary-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 360px;
+    background: #fff;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    padding: 2rem;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease-out forwards;
+    border-radius: 2px;
+
+    .summary-box {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .summary-header {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #d1d1d1;
+
+      .summary-title {
+        font-size: 1rem;
+        font-weight: 400;
+        margin-bottom: 0.75rem;
+        border-bottom: 1px solid #969696;
+        padding-bottom: 10px;
+      }
+
+      .summary-items-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .summary-items {
+        font-size: 0.95rem;
+        color: #666;
+        font-weight: 500;
+      }
+
+      .edit-link {
+        font-size: 0.85rem;
+        color: #0071e3;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .summary-line,
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1rem;
+
+      &.muted {
+        color: #888;
+      }
+    }
+
+    .close-summary {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #444;
+    }
+  }
+
+  .summary-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 998;
+    display: flex;
+    justify-content: flex-end;
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .checkout-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+
+    button {
+      padding: 1rem 3rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      background: var(--primary-color, #0071e3);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s all ease;
+
+      &:hover {
+        background: var(--primary-hover, #005bb5);
+      }
+    }
+  }
+
+  .payment-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 600px;
+    width: 100%;
+
+    h3 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-top: 4rem;
+    }
+
+    .payment-options {
+      display: grid;
+      // gap: 1.5rem;
+
+      .payment-card {
+     
+        border-radius: 4px;
+        padding: 1.5rem;
+        background: #fff;
+        cursor: default;
+        transition:
+          border 0.3s ease,
+          box-shadow 0.3s ease;
+
+        .label {
+          font-weight: 600;
+          font-size: 1.1rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .details {
+          font-size: 0.95rem;
+          color: #555;
+          line-height: 1.4;
+        }
+
+        .payment-form-wrapper {
+          margin-top: 1rem;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+// The summary overlay that covers the page when the summary is open
+.summary-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+  display: flex;
+  justify-content: flex-end;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+// The actual order summary panel that slides in from the right
+.order-summary-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 360px;
+  background: #fff;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  padding: 2rem;
+  overflow-y: auto;
+  animation: slideIn 0.3s ease-out forwards;
+  border-radius: 2px;
+
+
+  .summary-header {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #d1d1d1;
+
+    .summary-title {
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid #969696;
+      padding-bottom: 10px;
+    }
+
+    .summary-items-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .summary-items {
+      font-size: 0.95rem;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .edit-link {
+      font-size: 0.85rem;
+      color: #0071e3;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .summary-line,
+  .summary-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+
+    &.muted {
+      color: #888;
+    }
+  }
+
+  .close-summary {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #444;
+  }
+}
+
+// Slide in animation for the summary panel
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+
+
+  .bottom-checkout-container {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between; /* Aligns both the info and payment sections side by side */
+    gap: 2rem;
+    flex-wrap: wrap; /* Ensures that the sections stack on smaller screens */
+  }
+
+  .billing-summary {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    // gap: 1rem;
+    margin-bottom: 2rem;
+
+
+    .summary-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      color: #111;
+
+      &.muted {
+        color: #777;
+      }
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid #ddd;
+      color: black;
+    }
+  }
+
+  .payment-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    // gap: 1rem;
+    // margin-bottom: 2rem;
+  }
+
+  .payment-form-wrapper {
+    background: #f5f5f5;
+
+    border-radius: 4px;
+   
+    width: 100%;
+    max-width: 500px;
+
+    .payment-options {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      // gap: 1rem;
+
+     
+        .label {
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+        }
+
+        .details {
+          font-size: 0.95rem;
+          color: #555;
+        }
+      
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      background-color: var(--primary-accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: var(--primary-accent-dark);
+      }
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+
+@media (max-width: 768px) {
+  .checkout-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .billing-summary, .payment-container {
+    flex: 1;
+  }
+}

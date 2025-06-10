@@ -1,0 +1,65 @@
+/* Common styling for tooltips */
+.tooltip {
+  visibility: hidden;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+  margin-left: 15px;
+  align-items: center;
+  align-content: center;
+ 
+}
+
+/* Hover (Desktop) */
+.user-cell:hover .tooltip, 
+.provider-cell:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Tooltip Positioning */
+.user-cell, .provider-cell {
+  position: relative;
+}
+
+/* Tooltip for mobile (show on click/tap) */
+.user-cell.active .tooltip,
+.provider-cell.active .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Add the active class on click for mobile */
+.user-cell, .provider-cell {
+  cursor: pointer;
+}
+
+// /* Optional: Add animation for mobile */
+// .tooltip {
+//   animation: fadeIn 0.3s;
+// }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+select {
+  background-color: white; /* Set a background color for visibility */
+  color: black;  /* Set text color */
+  padding: 8px 12px; /* Add some padding for better spacing */
+  border-radius: 4px; /* Rounded corners for the dropdown */
+
+  font-size: 14px; /* Adjust the font size */
+  width: 100%; /* Make the dropdown take up the full width of the cell */
+  z-index: 1; /* Ensure dropdown is above other elements */
+}
