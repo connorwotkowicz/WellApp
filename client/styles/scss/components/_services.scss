@@ -13,23 +13,23 @@
 
   .category-section {
     margin-bottom: 3rem;
-    max-width: 1000px;  // Set the max width of the category section to 1000px
-    margin: 0 auto;  // Center the category section
-    padding: 0 1rem;  // Add some padding to avoid touching the edges
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
 
     .category-title {
       font-size: 1.8rem;
       font-weight: 600;
       margin-bottom: 1rem;
       color: var(--text-color);
-      text-align: left;  // Title stays aligned to the left
+      text-align: left;
     }
 
     .services-list {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;  // Cards are centered within the category
-      gap: 1rem;  // Space between the cards
+      justify-content: center;
+      gap: 1rem;
     }
 
     .service-card {
@@ -37,19 +37,17 @@
       padding: 1rem;
       border-radius: 4px;
       height: auto;
-      max-width: 300px;  // Set max-width for each card
+      max-width: 300px;
       width: 100%;
-      margin: 1rem 0;  // Add margin around the cards
-       transition: transform 0.3s ease-in-out;
-       
-    
+      margin: 1rem 0;
+      transition: transform 0.3s ease-in-out;
 
- &:hover {
-    transform: scale(1.02);  // Slightly increases size
-  }
+      &:hover {
+        transform: scale(1.02);
+      }
 
       img {
-        width: 100%;  // Make the image take the full width of the card
+        width: 100%;
         height: auto;
         border-radius: 4px;
         object-fit: cover;
@@ -60,14 +58,14 @@
         font-weight: 600;
         margin-bottom: 0.75rem;
         color: var(--text-color);
-        text-align: center;  // Center the title inside the card
+        text-align: center;
       }
 
       p {
         margin: 0.5rem 0;
         font-weight: 300;
         color: var(--text-color);
-        text-align: center;  // Center the text inside the card
+        text-align: center;
       }
 
       .provider-info {
@@ -94,13 +92,6 @@
   }
 }
 
-
-
-
-
-  
-
-
 .leaf {
   width: 120px;
   height: 120px;
@@ -111,5 +102,3 @@
   align-items: center;
   cursor: pointer;
 }
-
-

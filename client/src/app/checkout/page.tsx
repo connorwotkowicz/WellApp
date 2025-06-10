@@ -29,7 +29,7 @@ const CheckoutPage = () => {
   const [provider, setProvider] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // State for Order Summary Toggle
+  
   const [showSummary, setShowSummary] = useState(false);
 
   useEffect(() => {
@@ -44,9 +44,9 @@ const CheckoutPage = () => {
 
  const providerData = localStorage.getItem('selectedProvider');
   if (providerData) {
-    setProvider(JSON.parse(providerData));  // Set provider from localStorage
+    setProvider(JSON.parse(providerData));  
   } else {
-    router.push('/bookings');  // If no provider data, redirect to bookings page
+    router.push('/bookings');  
   }
 }, [router]);
 
@@ -131,7 +131,7 @@ const CheckoutPage = () => {
     router.push('/checkout/cancel');
   };
 
-  // Navigate back to the previous step
+  
   const handleBack = () => {
     if (currentStep === 'payment') {
       setCurrentStep('billing');

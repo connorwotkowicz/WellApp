@@ -2,7 +2,7 @@ export interface BillingInfo {
   name: string;
   billingName: string;
   addressLine1: string;
-  addressLine2?: string; // Make this optional with ?
+  addressLine2?: string; 
   city: string;
   state: string;
   zip: string;
@@ -18,5 +18,5 @@ export interface User {
   id: number;
   email: string;
   name: string;
-  // other fields...
+  
 }

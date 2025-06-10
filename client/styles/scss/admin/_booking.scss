@@ -1,4 +1,4 @@
-/* Common styling for tooltips */
+
 .tooltip {
   visibility: hidden;
   background-color: rgba(0, 0, 0, 0.7);
@@ -12,37 +12,33 @@
   margin-left: 15px;
   align-items: center;
   align-content: center;
- 
 }
 
-/* Hover (Desktop) */
-.user-cell:hover .tooltip, 
+
+.user-cell:hover .tooltip,
 .provider-cell:hover .tooltip {
   visibility: visible;
   opacity: 1;
 }
 
-/* Tooltip Positioning */
-.user-cell, .provider-cell {
+
+.user-cell,
+.provider-cell {
   position: relative;
 }
 
-/* Tooltip for mobile (show on click/tap) */
+
 .user-cell.active .tooltip,
 .provider-cell.active .tooltip {
   visibility: visible;
   opacity: 1;
 }
 
-/* Add the active class on click for mobile */
-.user-cell, .provider-cell {
+
+.user-cell,
+.provider-cell {
   cursor: pointer;
 }
-
-// /* Optional: Add animation for mobile */
-// .tooltip {
-//   animation: fadeIn 0.3s;
-// }
 
 @keyframes fadeIn {
   from {
@@ -54,12 +50,12 @@
 }
 
 select {
-  background-color: white; /* Set a background color for visibility */
-  color: black;  /* Set text color */
-  padding: 8px 12px; /* Add some padding for better spacing */
-  border-radius: 4px; /* Rounded corners for the dropdown */
+  background-color: white; 
+  color: black; 
+  padding: 8px 12px; 
+  border-radius: 4px;
 
-  font-size: 14px; /* Adjust the font size */
-  width: 100%; /* Make the dropdown take up the full width of the cell */
-  z-index: 1; /* Ensure dropdown is above other elements */
+  font-size: 14px; 
+  width: 100%; 
+  z-index: 1; 
 }

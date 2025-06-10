@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import Toastify styles
+import 'react-toastify/dist/ReactToastify.css'; 
 
 interface Provider {
   id: number;
@@ -20,7 +20,7 @@ const ManageProviders: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [editingProvider, setEditingProvider] = useState<Provider | null>(null);
 
-  // Fetch providers from API
+  
   useEffect(() => {
     const fetchProviders = async () => {
       try {
@@ -36,7 +36,7 @@ const ManageProviders: React.FC = () => {
     fetchProviders();
   }, []);
 
-  // Delete provider
+  
   const deleteProvider = async (id: number) => {
     try {
       const response = await axios.delete(`/api/providers/${id}`);

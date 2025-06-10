@@ -1,4 +1,4 @@
-// checkout.js - Remove the /create-checkout-session route logic from here
+
 
 const express = require('express');
 const router = express.Router();

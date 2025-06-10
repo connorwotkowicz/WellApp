@@ -42,7 +42,7 @@ export default function Login() {
         router.push('/admin');
       } else {
         toast.success(`Welcome back, ${data.user.name}`, { autoClose: 2500 });
-        router.push('/account');  // Redirect to /account after login
+        router.push('/account'); 
       }
     } catch (err: any) {
       setError(err.message);

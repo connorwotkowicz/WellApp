@@ -26,8 +26,8 @@ const ServicesPage = () => {
     const fetchServices = async () => {
       try {
         const response = await axios.get<Service[]>('/api/services');
-        console.log(response.data);  // Log the response data to verify
-        setServices(response.data);  // Set services data in state
+        console.log(response.data);  
+        setServices(response.data);  
         setLoading(false);
       } catch (error) {
         console.error('Error fetching services:', error);
@@ -42,7 +42,7 @@ const ServicesPage = () => {
     return <div>Loading...</div>;
   }
 
-  // Group services by specialty
+  
   const groupedServices = services.reduce((acc, service) => {
     const { specialty } = service;
     if (!acc[specialty]) {
@@ -70,16 +70,16 @@ return (
                       height: '120px',
                       backgroundColor: '#f0f0f0',
                       display: 'flex',
-                      justifyContent: 'center', // Centers icon horizontally
-                      alignItems: 'center', // Centers icon vertically
+                      justifyContent: 'center', 
+                      alignItems: 'center', 
                       borderRadius: '10px',
                       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
                     }}
                   >
-                    {/* Conditional rendering for different category icons */}
+                
                     {specialty === 'Meditation' && <Leaf size={60} color="#9DBB8C" />}
                     {specialty === 'Therapy' && <Edit size={60} color="#9DBB8C" />}
-                    {specialty === 'Yoga' && <Sun size={60} color="#9DBB8C" />} {/* Sun icon for Yoga */}
+                    {specialty === 'Yoga' && <Sun size={60} color="#9DBB8C" />} 
                   </div>
                 </div>
                 <div className="service-details">

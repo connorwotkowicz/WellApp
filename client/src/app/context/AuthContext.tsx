@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       storedUserRole,
     });
 
-    // Only set user data if both token and email are available
+    
     if (storedToken && storedEmail) {
       setToken(storedToken);
       setUser({
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       });
     }
     
-    setInitialized(true); // Set initialized to true once everything is loaded
+    setInitialized(true); 
   }, []);
 
   const login = (userData: User, token: string) => {

@@ -88,48 +88,48 @@ button:focus-visible {
   }
 }
 
-/* Global button styles */
+
 .action-btn {
-  background-color: transparent; /* Transparent background */
-  color: black; /* Black text */
+  background-color: transparent; 
+  color: black;
   font-size: 16px;
   padding: 10px 20px;
-  border: 2px solid #000000; /* Black border */
+  border: 2px solid #000000; 
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: bold;
-  margin-right: 10px; /* Add some space between buttons */
+  margin-right: 10px; 
 }
 
-/* Edit button specific style */
+
 .edit-btn {
-  border-color: #606f80; /* Blue border for edit */
-  color: #47688c; /* Blue text for edit */
+  border-color: #606f80; 
+  color: #47688c; 
 }
 
 .edit-btn:hover {
-  color: #0056b3; /* Darker blue text on hover */
-  border-color: #0056b3; /* Darker blue border on hover */
+  color: #0056b3; 
+  border-color: #0056b3; 
 }
 
-/* Delete button specific style */
+
 .delete-btn {
-  border-color: #875a5e; /* Red border for delete */
-  color: #5f363b; /* Red text for delete */
+  border-color: #875a5e; 
+  color: #5f363b;
 }
 
 .delete-btn:hover {
-  color: #c82333; /* Darker red text on hover */
-  border-color: #c82333; /* Darker red border on hover */
+  color: #c82333; 
+  border-color: #c82333; 
 }
 
-/* Button hover effect */
+
 .action-btn:hover {
-  transform: none; /* Remove the scale effect, just color change */
+  transform: none;
 }
 
-/* Disabled state */
+
 .action-btn:disabled {
   border-color: #ccc;
   color: #ccc;
@@ -137,23 +137,23 @@ button:focus-visible {
   opacity: 0.7;
 }
 
-/* Modal Wrapper */
+
 .modal {
-  display: none; /* Hidden by default */
+  display: none; 
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); /* Dark overlay */
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: 1000;
   justify-content: center;
   align-items: center;
-  animation: fadeIn 0.3s ease-out forwards; /* Animation to fade in */
+  animation: fadeIn 0.3s ease-out forwards; 
 }
 
 .modal.show {
-  display: flex; /* Show modal when the class 'show' is added */
+  display: flex; 
 }
 
 .modal-content {
@@ -261,7 +261,7 @@ button:focus-visible {
   font-weight: 500;
   transition: background-color 0.3s ease;
   align-self: center;
-  width: 100% !important; // Ensures it takes full width inside the card
+  width: 100% !important;
   max-width: 600px !important;
   border-radius: 4px;
   padding: 0.7rem;
@@ -323,7 +323,7 @@ button:focus-visible {
   color: #000;
 }
 
-/* Fade In Animation */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
