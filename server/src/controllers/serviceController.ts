@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import db from '../db';
-// serviceController.ts
+
 export const getAllServices = async (_req: Request, res: Response) => {
   try {
     const result = await db.query(`

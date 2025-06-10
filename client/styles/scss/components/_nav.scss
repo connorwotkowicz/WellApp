@@ -47,25 +47,23 @@
   align-items: center;
   gap: 15px;
 
-.home-link {
+  .home-link {
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    margin-right: 10px;  // Adjust space from the next link
+    margin-right: 10px;
   }
 
-  
-
   .home-icon {
-    font-size: 16px;  // Set the home icon size
+    font-size: 16px;
     width: 16px;
     height: 16px;
-    margin: 0;  // Remove any extra margin or padding
-    vertical-align: middle;  // Ensure the icon aligns correctly with text
+    margin: 0;
+    vertical-align: middle;
     &:hover {
-      transform: scale(1.1);  // Slightly enlarge the icon on hover
-      color: var(--primary-accent);  // Change color when hovered (optional)
+      transform: scale(1.1);
+      color: var(--primary-accent);
     }
   }
 
@@ -73,10 +71,7 @@
     text-decoration: none;
     font-size: 1rem !important;
     font-weight: normal;
-    // margin-left: 10px;  // Space between links
   }
-
-
 }
 
 .nav-logo,
@@ -255,11 +250,7 @@
   }
 }
 
-
-
-
 .nav-logo {
-
   font-size: 1rem;
   text-decoration: none;
   color: inherit;

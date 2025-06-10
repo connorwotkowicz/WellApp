@@ -18,7 +18,7 @@ export default function ProviderListPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Fetching provider data from API
+    
     const fetchProviders = async () => {
       try {
         const response = await fetch('/api/providers');
@@ -60,7 +60,7 @@ export default function ProviderListPage() {
                     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
                   }}
                 >
-                  {/* Conditional rendering for different specialty icons */}
+               
                   {provider.specialty === 'Yoga' && <Sun size={60} color="#9DBB8C" />}
                   {provider.specialty === 'Meditation' && <Moon size={60} color="#9DBB8C" />}
                   {provider.specialty === 'Therapy' && <Edit size={60} color="#9DBB8C" />}

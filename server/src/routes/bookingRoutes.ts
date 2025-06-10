@@ -54,14 +54,14 @@ router.put('/:id', async (req: Request, res: Response): Promise<void> => {
 router.post('/create-booking', async (req: Request, res: Response): Promise<void> => {
   const { providerId, serviceId, time, userId } = req.body;
 
-  // Validate required fields
+  
   if (!providerId || !serviceId || !time || !userId) {
     res.status(400).json({ error: 'Missing required fields' });
     return;
   }
 
   try {
-    // Check if the provider exists
+    
     const result = await db.query(
       `INSERT INTO bookings (user_id, provider_id, service_id, time, status)
        VALUES ($1, $2, $3, $4, 'confirmed')
@@ -69,7 +69,7 @@ router.post('/create-booking', async (req: Request, res: Response): Promise<void
       [userId, providerId, serviceId, time]
     );
 
-    // Check if the insertion was successful and return the new booking
+    
     if (result.rows.length > 0) {
       res.status(201).json({ booking: result.rows[0] });
     } else {

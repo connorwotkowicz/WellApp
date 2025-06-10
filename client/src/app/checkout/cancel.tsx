@@ -1,4 +1,4 @@
-// pages/checkout/cancel.tsx
+
 'use client';
 
 import { useRouter } from 'next/navigation';

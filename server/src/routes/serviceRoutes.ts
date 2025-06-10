@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import db from '../db';  // Default import for the db object
+import db from '../db';  
 
 const router = express.Router();
 
@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
       FROM services s
       JOIN providers p ON s.provider_id = p.id
     `);
-    res.status(200).json(result.rows);  // Return the fetched services with provider data
+    res.status(200).json(result.rows);  
   } catch (err) {
     console.error('Error fetching services with providers:', err);
     res.status(500).json({ error: 'Failed to fetch services' });
@@ -60,7 +60,7 @@ router.put('/:id', async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    res.status(200).json(result.rows[0]); // Return updated service
+    res.status(200).json(result.rows[0]); 
   } catch (err) {
     console.error('Error updating service:', err);
     res.status(500).json({ error: 'Failed to update service' });

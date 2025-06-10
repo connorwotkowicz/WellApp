@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify'; // Import Toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
+import { toast, ToastContainer } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 
 interface Booking {
   booking_id: number;
@@ -66,7 +66,7 @@ const ManageBookings: React.FC = () => {
               : booking
           )
         );
-        setEditingBooking(null); // Close the modal after successful update
+        setEditingBooking(null); 
         toast.success('Booking updated successfully');
       } catch (error) {
         console.error('Error updating booking:', error);
@@ -76,7 +76,7 @@ const ManageBookings: React.FC = () => {
   };
 
   const handleCancelEdit = () => {
-    setEditingBooking(null); // Close the modal without saving changes
+    setEditingBooking(null); 
   };
 
   const deleteBooking = async (id: number) => {
@@ -161,7 +161,7 @@ const ManageBookings: React.FC = () => {
         </tbody>
       </table>
 
-{/* Modal for Editing Booking */}
+
 {editingBooking && (
   <div className="modal show">
     <div className="modal-content">

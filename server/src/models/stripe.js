@@ -13,7 +13,7 @@ const createCheckoutSession = async (req, res) => {
 
     const provider = result.rows[0]; 
 
-// Backend: Stripe session creation endpoint
+
 const session = await stripe.checkout.sessions.create({
   payment_method_types: ['card'],
   line_items: [
@@ -24,7 +24,7 @@ const session = await stripe.checkout.sessions.create({
           name: `Session with ${providerId}`,
           description: `Booking time: ${time}`,
         },
-        unit_amount: 1000, // example price, adjust to your actual price
+        unit_amount: 1000, 
       },
       quantity: 1,
     },

@@ -56,13 +56,13 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
     setErrorMessage('');
 
     try {
-      // Step 1: Create a PaymentIntent on the server-side
+      
       const response = await fetch('/api/payment/payment-intent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ amount: 1000 }), // Replace 1000 with the actual amount if needed
+        body: JSON.stringify({ amount: 1000 }), 
       });
 
       if (!response.ok) {
@@ -71,7 +71,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
 
       const { clientSecret } = await response.json();
 
-      // Step 2: Confirm the payment with the card details
+      
       const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardElement,
@@ -90,14 +90,14 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
         },
       });
 
-      // Handle error if payment fails
+      
       if (error) {
         setErrorMessage(error.message || "Payment failed");
         setLocalIsProcessing(false);
         return;
       }
 
-      // Step 3: If payment succeeds, call the success callback
+      
       if (paymentIntent.status === 'succeeded') {
         onSuccess();
       }
@@ -110,10 +110,10 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="payment-form-wrapper">
-      {/* Display error message if there's an error */}
+    
       {errorMessage && <div className="error-message">{errorMessage}</div>}
 
-      {/* Card Element for payment */}
+     
       <div>
         <label>Credit or Debit Card</label>
         <CardElement />
@@ -123,7 +123,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
         {localIsProcessing || isProcessing ? 'Processing...' : 'Pay Now'}
       </button>
 
-      {/* Cancel button */}
+    
       <button className="modal-button" type="button" onClick={onCancel} disabled={localIsProcessing || isProcessing}>
         Cancel
       </button>

@@ -26,11 +26,9 @@
   }
 }
 
-
 .contact-info {
   margin-left: 8px;
 }
-
 
 /* =======================================
    ACCOUNT TITLE & SIGNOUT
@@ -56,7 +54,6 @@ button.signout-button {
     text-decoration: underline;
   }
 }
-
 
 /* =======================================
    ACCOUNT WRAPPER & GREETING
@@ -92,7 +89,6 @@ button.signout-button {
   }
 }
 
-
 /* =======================================
    BOOKINGS SECTION
 ======================================= */
@@ -104,7 +100,6 @@ button.signout-button {
   padding: 0;
 
   .booking-card {
-    // background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(12px);
     border: 1px solid var(--primary-accent);
     border-radius: 4px;
@@ -112,7 +107,7 @@ button.signout-button {
     color: black;
     background-color: transparent;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-    
+
     transition: transform 0.3s ease;
 
     &:hover {
@@ -133,14 +128,11 @@ button.signout-button {
   }
 }
 
-
 .account-wrapper {
-
-    h3 {
-        color: black;
-    }
+  h3 {
+    color: black;
+  }
 }
-
 
 /* =======================================
    ACCOUNT SETTINGS SECTION
@@ -166,7 +158,6 @@ button.signout-button {
       padding: 0;
       box-shadow: none;
       border-radius: 0;
-      
 
       h4 {
         font-size: 1.2rem;
@@ -180,8 +171,6 @@ button.signout-button {
         margin: 0;
         color: black;
         line-height: 1.6;
-      
-      
       }
 
       a {
@@ -191,7 +180,6 @@ button.signout-button {
         color: var(--primary-accent);
         text-decoration: none;
         margin-bottom: 0.5rem;
-        
 
         &:hover {
           text-decoration: underline;

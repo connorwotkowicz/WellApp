@@ -6,14 +6,14 @@ const router = express.Router();
 
 router.get('/', async (req: Request, res: Response): Promise<void> => {
   try {
-    // Updated SQL query to fetch provider details along with specialty
+    
     const result = await db.query(
       `SELECT providers.id, providers.name, providers.specialty, providers.image_url, providers.bio
        FROM providers
        ORDER BY providers.id`
     );
 
-    res.status(200).json(result.rows); // Include specialty in the response
+    res.status(200).json(result.rows); 
   } catch (err) {
     console.error('Error fetching providers:', err);
     res.status(500).json({ error: 'Failed to fetch providers' });

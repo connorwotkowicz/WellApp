@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
-import { AuthRequest } from './authMiddleware'; // Importing the AuthRequest type
-import db from '../db'; // Import the db connection
+import { AuthRequest } from './authMiddleware'; 
+import db from '../db'; 
 
 export const isAdmin = (req: AuthRequest, res: Response, next: NextFunction): void => {
   if (req.userId) {
-    // Fetch user role from the database using the userId
+    
     db.query('SELECT role FROM users WHERE id = $1', [req.userId])
       .then((result) => {
         if (result.rows.length > 0 && result.rows[0].role === 'admin') {
-          return next(); // Proceed if the user is an admin
+          return next(); 
         } else {
           res.status(403).json({ error: 'Forbidden: Admin access required' });
         }
