@@ -3,7 +3,6 @@
   transition: filter 0.3s ease;
 }
 
-/* ───── NAVBAR STRUCTURE ───── */
 .navbar {
   background: var(--bg-color);
   height: 40px;
@@ -13,8 +12,7 @@
   z-index: 100;
   padding: 0 20px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+
   text-decoration: none;
 
   @media (max-width: 768px) {
@@ -39,18 +37,48 @@
   gap: 15px;
 }
 
-.nav-center {
+.nav-m-right {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   flex-grow: 1;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   gap: 15px;
+
+.home-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 10px;  // Adjust space from the next link
+  }
+
+  
+
+  .home-icon {
+    font-size: 16px;  // Set the home icon size
+    width: 16px;
+    height: 16px;
+    margin: 0;  // Remove any extra margin or padding
+    vertical-align: middle;  // Ensure the icon aligns correctly with text
+    &:hover {
+      transform: scale(1.1);  // Slightly enlarge the icon on hover
+      color: var(--primary-accent);  // Change color when hovered (optional)
+    }
+  }
+
+  .nav-link {
+    text-decoration: none;
+    font-size: 1rem !important;
+    font-weight: normal;
+    // margin-left: 10px;  // Space between links
+  }
+
+
 }
 
-/* ───── LOGO + TITLE ───── */
 .nav-logo,
 .lognav-logo,
 .product-nav-button,
@@ -75,7 +103,6 @@
   color: var(--hover);
 }
 
-/* ───── RIGHT NAV LINKS ───── */
 .nav-right .nav-item:hover,
 .nav-right .nav-button:hover,
 .nav-right .nav-button-search-icon:hover,
@@ -84,7 +111,6 @@
   color: var(--text-hover);
 }
 
-/* ───── TOGGLE BUTTON ───── */
 .theme-toggle-button {
   height: 100%;
   margin-top: 1px;
@@ -105,7 +131,6 @@
   }
 }
 
-/* ───── PROFILE PICTURE ───── */
 .profile-pic {
   width: 40px;
   height: 40px;
@@ -120,7 +145,6 @@
   }
 }
 
-/* ───── NAV TEXT ITEMS ───── */
 .nav-item {
   font-size: 16px;
   font-weight: normal;
@@ -131,7 +155,6 @@
   }
 }
 
-/* ───── BUTTON STYLES ───── */
 .nav-button,
 .nav-button-search-icon {
   font-size: 14px;
@@ -141,10 +164,12 @@
   color: var(--text-color);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background 0.3s, transform 0.3s, box-shadow 0.3s ease;
+  transition:
+    background 0.3s,
+    transform 0.3s,
+    box-shadow 0.3s ease;
 }
 
-/* ───── PRODUCT NAV BUTTONS ───── */
 .product-nav-button,
 .back-to-products-button,
 .product-nav-button:hover,
@@ -153,7 +178,6 @@
 .product-nav-button.active {
   text-decoration: none !important;
 }
-
 
 /* ===============================
    ACCOUNT DROPDOWN CONTAINER
@@ -178,7 +202,6 @@
     }
   }
 }
-
 /* ===============================
    DROPDOWN MENU STYLES
 =============================== */
@@ -193,30 +216,69 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 999;
 
+  display: none;
   opacity: 0;
   transform: translateY(-10px);
-  animation: dropdownFadeIn 0.3s ease forwards;
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
 
-  .dropdown-link {
-    display: block;
-    padding: 10px 20px;
-    font-size: 0.8rem;
-    color: #333;
-    text-decoration: none;
-    transition: background 0.2s ease;
+.account-dropdown-menu.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
 
-    &:hover {
-      background-color: #f1f1f1;
-      color: black;
+.account-dropdown-menu .dropdown-link {
+  display: block;
+  padding: 10px 20px;
+  font-size: 0.8rem;
+  color: #333;
+  text-decoration: none;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background-color: #f1f1f1;
+    color: black;
+  }
+
+  &.logout-button {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+}
+
+
+
+
+.nav-logo {
+
+  font-size: 1rem;
+  text-decoration: none;
+  color: inherit;
+
+  .logo-short {
+    display: none;
+  }
+
+  .logo-full {
+    display: inline;
+  }
+
+  @media (max-width: 480px) {
+    .logo-full {
+      display: none;
     }
 
-    &.logout-button {
-      width: 100%;
-      text-align: left;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
+    .logo-short {
+      display: inline;
     }
   }
 }

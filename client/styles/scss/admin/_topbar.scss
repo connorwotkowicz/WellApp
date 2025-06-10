@@ -1,0 +1,102 @@
+/* ===============================
+   TOPBAR STYLING
+=============================== */
+.admin-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-color);
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid #e3e6f0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+  box-sizing: border-box;
+
+  .admin-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+
+
+    .admin-header-title {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--text-color);
+      margin: 0;
+    }
+  }
+
+  .dash-button {
+    display: none;
+
+    @media (max-width: 768px) {
+      display: block;
+      a {
+        font-weight: 500;
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .admin-header-tools {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+}
+
+
+/* ===============================
+   PROFILE DROPDOWN
+=============================== */
+.profile-dropdown {
+  position: relative;
+}
+
+.admin-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #2f80ed;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  object-fit: cover;
+}
+
+.profile-dropdown-menu {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 180px;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+
+  .dropdown-item {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background-color: var(--hover-bg);
+    }
+  }
+}

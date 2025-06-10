@@ -1,0 +1,92 @@
+.booking-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    visibility 0.3s,
+    opacity 0.3s ease-in-out;
+
+  &.show {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .popup-content {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1010;
+    transition: transform 0.3s ease-in-out;
+    transform: scale(0.9);
+  }
+
+  .popup-content.show {
+    transform: scale(1);
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--primary-accent);
+    padding: 5px;
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+
+    &:hover {
+      color: var(--primary-accent-dark);
+      transform: scale(1.1);
+    }
+  }
+
+  .page-content.blurred {
+    filter: blur(6px);
+    transition: filter 0.3s ease;
+  }
+}
+
+.booking-popup form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.booking-popup input,
+.booking-popup select,
+.booking-popup button {
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  font-size: 1rem;
+  background: var(--input-bg);
+  color: var(--text-color);
+}
+
+.booking-popup button {
+  background-color: var(--primary-accent);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.booking-popup button:hover {
+  background-color: var(--primary-accent-dark);
+}

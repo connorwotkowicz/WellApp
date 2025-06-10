@@ -3,7 +3,7 @@ export const users = [
     id: 'u1',
     name: 'Roro',
     email: 'roro@example.com',
-    role: 'client', // or 'provider'
+    role: 'client', 
   },
   {
     id: 'u2',

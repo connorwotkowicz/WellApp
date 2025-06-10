@@ -1,94 +1,63 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import {
-  getAllProviders,
-  getAllBookings,
-  updateProviderStatus,
-} from '@/utils/api';
+import React, { useContext, useState, useEffect } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import AdminLayout from './components/AdminLayout';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import withAdminAuth from '../../utils/withAdminAuth';
 
+const actions = [
+  { title: 'Manage Providers', path: '/admin/providers', description: 'View and manage service providers' },
+  { title: 'Manage Services', path: '/admin/services', description: 'View and manage services offered' },
+  { title: 'Manage Users', path: '/admin/users', description: 'View and manage users and their roles' },
+  {title: 'Manage Bookings', path: '/admin/bookings', description: 'View and manage bookings'}
+];
 
-interface Provider {
-  id: string;
-  name: string;
-  specialty: string;
-  status: string; 
-}
-
-interface Booking {
-  id: string;
-  time: string;
-  providerName: string;
-  userId: string;
-}
-
-export default function AdminDashboardPage() {
-  const [providers, setProviders] = useState<Provider[]>([]);
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+const Dashboard: React.FC = () => {
+  const { user, initialized } = useContext(AuthContext); 
+  const [loading, setLoading] = useState(true); 
+  const router = useRouter();
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const [providerData, bookingData] = await Promise.all([
-          getAllProviders(),
-          getAllBookings(),
-        ]);
-        setProviders(providerData);
-        setBookings(bookingData);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+    if (!initialized) {
+      return; 
     }
 
-    fetchData();
-  }, []);
 
-  if (loading) return <p>Loading admin data...</p>;
-  if (error) return <p>Error: {error}</p>;
+    console.log('User data from context:', user);
+
+
+    if (!user) {
+      console.log('No user found, redirecting to login...');
+      router.push('/login');
+    }
+
+    setLoading(false); 
+  }, [user, initialized, router]);
+
+
+  if (loading || !initialized) {
+    return <div>Loading...</div>;
+  }
+
 
   return (
-    <div>
-      <h1>Admin Dashboard</h1>
-
-      <section>
-        <h2>All Providers</h2>
-        <ul>
-          {providers.map((p) => (
-            <li key={p.id}>
-              {p.name} – {p.specialty} ({p.status}){' '}
-              <button
-                onClick={async () => {
-                  const newStatus = p.status === 'active' ? 'inactive' : 'active';
-                  await updateProviderStatus(p.id, newStatus);
-                  setProviders((prev) =>
-                    prev.map((prov) =>
-                      prov.id === p.id ? { ...prov, status: newStatus } : prov
-                    )
-                  );
-                }}
-              >
-                Toggle Status
-              </button>
-            </li>
+    <AdminLayout user={user}>
+      <div className="admin-dashboard">
+        <div className="dashboard-grid">
+          {actions.map((action) => (
+            <Link href={action.path} key={action.title}>
+              <div className="dashboard-card">
+                <h2>{action.title}</h2>
+                <p>{action.description}</p>
+              </div>
+            </Link>
           ))}
-        </ul>
-      </section>
-
-      <section>
-        <h2>All Bookings</h2>
-        <ul>
-          {bookings.map((b) => (
-            <li key={b.id}>
-              User: {b.userId}, Provider: {b.providerName}, Time:{' '}
-              {new Date(b.time).toLocaleString()}
-            </li>
-          ))}
-        </ul>
-      </section>
-    </div>
+        </div>
+      </div>
+    </AdminLayout>
   );
-}
+};
+
+export default withAdminAuth(Dashboard);
