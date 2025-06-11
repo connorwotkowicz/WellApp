@@ -9,7 +9,7 @@
 
 A **web-based wellness platform** where users can book 1:1 sessions with vetted practitioners. The focus is on developing streamlined Progressive Web App (PWA) experience.
 
-> **Note**: This project is a **work in progress**. The application has not yet been deployed, and features are still being implemented and tested. Some functionality is still being refined and added, and the README will be updated accordingly.
+> **Note**: This project is a **work in progress**. Though functional locally, the deployed application is still undergoing testing ([View current build](https://wellness2k25.vercel.app/) and features are still being implemented and tested. Some functionality is still being refined and added, and the README will be updated accordingly.
 
 ---
 
@@ -123,3 +123,12 @@ npm run dev
 | GET    | `/api/providers`        | Get all providers                  |
 | PUT    | `/api/providers/:id`    | Edit provider (admin only)         |
 | DELETE | `/api/providers/:id`    | Delete provider (admin only)       |
+
+
+
+## Author
+
+- Connor Wotkowicz
+- - [GitHub](https://github.com/connorwotkowicz)
+- - [LinkedIn](https://www.linkedin.com/in/wotkowicz)
+
