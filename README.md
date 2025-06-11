@@ -123,3 +123,12 @@ npm run dev
 | GET    | `/api/providers`        | Get all providers                  |
 | PUT    | `/api/providers/:id`    | Edit provider (admin only)         |
 | DELETE | `/api/providers/:id`    | Delete provider (admin only)       |
+
+
+
+## Author
+
+- Connor Wotkowicz
+- - [GitHub](https://github.com/connorwotkowicz)
+- - [LinkedIn](https://www.linkedin.com/in/wotkowicz)
+
