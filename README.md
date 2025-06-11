@@ -9,7 +9,7 @@
 
 A **web-based wellness platform** where users can book 1:1 sessions with vetted practitioners. The focus is on developing streamlined Progressive Web App (PWA) experience.
 
-> **Note**: This project is a **work in progress**. The application has not yet been deployed, and features are still being implemented and tested. Some functionality is still being refined and added, and the README will be updated accordingly.
+> **Note**: This project is a **work in progress**. The application has been deployed for testing but not fully functional ([View current build](https://wellness2k25-709t2okqz-connorwotkowiczs-projects.vercel.app/bookings)) , and features are still being implemented and tested. Some functionality is still being refined and added, and the README will be updated accordingly.
 
 ---
 
