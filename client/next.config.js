@@ -1,13 +1,10 @@
 const nextConfig = {
   reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   async rewrites() {
     return [
       {
         source: "/api/:path*",
-        destination: "http://localhost:3001/api/:path*",
+        destination: "http://18.220.85.203:3001/api/:path*", 
       },
     ];
   },
