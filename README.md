@@ -7,77 +7,67 @@
 ![Vercel](https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)
 
+A **web-based wellness platform** where users can book 1:1 sessions with vetted wellness practitioners in areas like yoga, meditation, etc. This platform is focused on delivering a **clean, streamlined Progressive Web App (PWA)** experience, emphasizing ease of use, scalability, and backend infrastructure.
 
-A full-stack wellness appointment booking platform built with **Next.js** (frontend) and **Express.js** (backend). Users can browse services, book sessions, and manage their wellness appointments. Admins can manage availability, services, and bookings.
+> **Note**: This project is a **work in progress**. The application has not yet been deployed, and features are still being implemented and tested. Some functionality is still being refined and added, and the README will be updated accordingly.
 
 ---
 
-## Stack
+## Tech Stack
 
 ### Frontend
-- [Next.js 14+ (App Router)](https://nextjs.org/docs)
-- React (via Next.js)
-- SCSS Modules or Tailwind CSS (optional)
-- Context API or Zustand for state management
+- **Next.js 14+** (App Router)
+- React - Next.js
+- SCSS Modules 
+- Context API for state management
 
 ### Backend
-- [Express.js](https://expressjs.com/)
+- **Express.js**
 - Node.js
-- PostgreSQL (via Prisma or `pg`)
-- RESTful API (JSON)
+- PostgreSQL 
+- RESTful API
 
-### Auth & Security
-- JWT Authentication or [NextAuth.js](https://next-auth.js.org/) *(optional depending on SSR needs)*
-- Bcrypt (password hashing)
-- Helmet & CORS middleware for secure headers
-
----
-
-## 📁 Project Structure
-```
-wellness-app/
-│
-├── client/ # Next.js frontend
-│ ├── app/ # App Router pages
-│ ├── components/ # Reusable UI components
-│ ├── context/ # Global state
-│ ├── styles/ # SCSS modules or Tailwind
-│ ├── services/ # Frontend API functions
-│ └── ...
-│
-├── server/ # Express backend
-│ ├── routes/ # API route handlers
-│ ├── controllers/ # Business logic
-│ ├── models/ # Database models
-│ ├── middleware/ # Auth, error handling
-│ └── ...
-│
-├── .env # Environment variables
-├── package.json # Root config (or use workspaces)
-└── README.md
-```
+### Authentication & Security
+- JWT Authentication
+- Bcrypt 
+- Helmet & CORS middleware 
 
 ---
 
-## MVP Features
+## Features
 
-### Users
+### Users:
 - Browse wellness services
-- Sign up / Login
+- Sign up / Log in
 - Book available time slots
 - View upcoming and past appointments
+- Access account page
 
-### Admins
+### Admins:
+- Manage users (update, delete, role assignment)
 - Add, edit, and delete services
-- Manage availability calendar
-- View user bookings
-- Admin dashboard (protected)
+- Manage bookings (update status, delete bookings)
+- Admin dashboard for data viewing/export (protected)
 
 ---
 
-## Setup
+## Work in Progress
 
-### Backend
+This application is still under active development, and the following features are either in progress or upcoming:
+
+1. **Admin dashboard**: Admins can manage users, services, and bookings. 
+2. **Availability calendar**: Feature to manage availability will be added in the future.
+3. **Stripe payment integration**: Ongoing debugging of Stripe integration for booking payments.
+4. **UI/UX Tweaks**: Some final touch-ups will be made to solidify visual flow, but the overall design is polished and functional.
+5. **Post-launch support**: Roadmap for support will be outlined once MVP is finalized.
+
+---
+
+## Basic Setup
+>More information to add later
+
+### Backend Setup
+1. Navigate to the `server` directory:
 ```bash
 cd server
 npm install
@@ -92,33 +82,45 @@ npm run dev
 ```
 
 
-## API Routes
+## General API Routes
 
 ### Auth
+
 | Method | Endpoint             | Description              |
 |--------|----------------------|--------------------------|
 | POST   | `/api/auth/register` | Register a new user      |
 | POST   | `/api/auth/login`    | Log in and receive token |
 
 ### Services
-| Method | Endpoint         | Description                |
-|--------|------------------|----------------------------|
-| GET    | `/api/services`  | Get all wellness services  |
-| POST   | `/api/services`  | Create new service (admin) |
-| PUT    | `/api/services/:id` | Update service (admin) |
-| DELETE | `/api/services/:id` | Delete service (admin) |
+
+| Method | Endpoint             | Description                |
+|--------|----------------------|----------------------------|
+| GET    | `/api/services`      | Get all wellness services  |
+| PUT    | `/api/services/:id`  | Update service (admin)     |
+| DELETE | `/api/services/:id`  | Delete service (admin)     |
 
 ### Bookings
-| Method | Endpoint            | Description                     |
-|--------|---------------------|---------------------------------|
-| GET    | `/api/bookings`     | Get user’s bookings             |
-| POST   | `/api/bookings`     | Book a new appointment          |
-| PUT    | `/api/bookings/:id` | Update booking (user/admin)     |
-| DELETE | `/api/bookings/:id` | Cancel booking (user/admin)     |
+
+| Method | Endpoint             | Description                     |
+|--------|----------------------|---------------------------------|
+| GET    | `/api/bookings`       | Fetch user bookings             |
+| POST   | `/api/bookings`       | Book a new appointment          |
+| PUT    | `/api/bookings/:id/status` | Update booking status (user/admin) |
+| DELETE | `/api/bookings/:id`   | Delete booking (admin only)     |
 
 ### Users
-| Method | Endpoint      | Description              |
-|--------|---------------|--------------------------|
-| GET    | `/api/users`  | Get all users (admin)    |
-| GET    | `/api/users/:id` | Get specific user     |
 
+| Method | Endpoint             | Description              |
+|--------|----------------------|--------------------------|
+| GET    | `/api/users`          | Get all users (admin)    |
+| GET    | `/api/users/:id`      | Get specific user        |
+| PUT    | `/api/users/:id`      | Update user (admin only) |
+| DELETE | `/api/users/:id`      | Delete user (admin only) |
+
+### Providers
+
+| Method | Endpoint               | Description                        |
+|--------|------------------------|------------------------------------|
+| GET    | `/api/providers`        | Get all providers                  |
+| PUT    | `/api/providers/:id`    | Edit provider (admin only)         |
+| DELETE | `/api/providers/:id`    | Delete provider (admin only)       |
