@@ -19,13 +19,12 @@ export default function AccountPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-
     if (initialized && !token) {
       router.replace('/login');
       return;
     }
 
-    if (!initialized) return; 
+    if (!initialized) return;
 
     async function fetchBookings() {
       try {
@@ -45,12 +44,11 @@ export default function AccountPage() {
     fetchBookings();
   }, [initialized, token, router]);
 
-  if (!initialized) return <p>Loading...</p>; 
+  if (!initialized) return <p>Loading...</p>;
   if (!token) return null;
 
   return (
     <div className="account-page">
-    
       <section className="stripe default greeting-stripe">
         <div className="account-wrapper greeting-wrap">
           <h2 className="account-title">Welcome, {user?.name ?? 'User'}!</h2>
@@ -91,7 +89,6 @@ export default function AccountPage() {
         </div>
       </section>
 
- 
       <section className="stripe default">
         <div className="account-wrapper">
           <div className="account-settings">
@@ -99,23 +96,23 @@ export default function AccountPage() {
             <div className="settings-columns">
               <div className="settings-block">
                 <h4>Address</h4>
-                <p>{user?.address || 'No address available'}</p>
+                <p>{(user as any)?.address || 'No address added'}</p>
               </div>
               <div className="settings-block">
-             <h4>Contact Info</h4>
-<p>
-  <a>
-    <strong>Email: </strong>
-  </a>
-  <span className="contact-info">{user?.email}</span>
-  <br />
-  <a>
-    <strong>Phone: </strong>
-  </a>
-  <span className="contact-info">
-    {user?.phone || 'No phone number available'}
-  </span>
-</p>
+                <h4>Contact Info</h4>
+                <p>
+                  <a>
+                    <strong>Email: </strong>
+                  </a>
+                  <span className="contact-info">{user?.email}</span>
+                  <br />
+                  <a>
+                    <strong>Phone: </strong>
+                  </a>
+                  <span className="contact-info">
+                    {(user as any)?.phone || 'No phone number added'}
+                  </span>
+                </p>
               </div>
             </div>
           </div>
