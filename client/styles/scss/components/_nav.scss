@@ -255,6 +255,10 @@
   text-decoration: none;
   color: inherit;
 
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+  }
+
   .logo-short {
     display: none;
   }
@@ -270,6 +274,112 @@
 
     .logo-short {
       display: inline;
+    }
+  }
+}
+
+.hamburger-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-color);
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.nav-m-right {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.nav-right {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+/* ===============================
+   MOBILE FULLSCREEN NAV MENU
+=============================== */
+.mobile-fullscreen-menu {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 1000;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-in-out;
+    padding-top: 5rem;
+    overflow-y: auto;
+
+    &.open {
+      transform: translateY(0);
+    }
+
+    .mobile-nav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .nav-link,
+    .nav-button {
+      font-size: 1.25rem;
+      color: var(--text-color);
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: var(--hover-bg, #eaeaea);
+      }
+    }
+  }
+}
+
+.navbar {
+  height: 40px;
+
+  @media (max-width: 768px) {
+    height: 64px;
+    padding: 0 1.5rem;
+  }
+}
+
+.hamburger-toggle {
+  font-size: 32px;
+  padding: 0.5rem;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.mobile-fullscreen-menu {
+  @media (max-width: 768px) {
+    .mobile-nav {
+      gap: 2.5rem;
+      padding: 3rem 2rem;
+
+      .nav-link,
+      .nav-button {
+        font-size: 1.5rem;
+        padding: 1rem 1.5rem;
+      }
     }
   }
 }
