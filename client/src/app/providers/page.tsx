@@ -20,18 +20,20 @@ export default function ProviderListPage() {
   useEffect(() => {
     
     const fetchProviders = async () => {
-      try {
-        const response = await fetch('/api/providers');
-        if (!response.ok) {
-          throw new Error('Failed to fetch providers');
-        }
-        const data = await response.json();
-        setProviders(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
+try {
+  const response = await fetch('/api/providers');
+  const data = await response.json();
+  setProviders(data);
+} catch (error) {
+  if (error instanceof Error) {
+    setError(error.message);
+  } else {
+    setError("An unknown error occurred");
+  }
+} finally {
+  setLoading(false);
+}
+
     };
 
     fetchProviders();
