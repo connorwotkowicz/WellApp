@@ -56,27 +56,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setInitialized(true); 
   }, []);
 
-  const login = (userData: User, token: string) => {
-    console.log('Logging in with user data:', userData);
+const login = (userData: User, token: string) => {
+  console.log('Logging in with user data:', userData);
 
-    setUser({
-      ...userData,
-      profilePic: userData.profilePic || '',
-      user_role: userData.user_role || 'user',
-    });
+  setUser({
+    ...userData,
+    profilePic: userData.profilePic || '',
+    user_role: userData.user_role || 'user',
+  });
 
-    localStorage.setItem('token', token);
-    localStorage.setItem('userEmail', userData.email);
-    localStorage.setItem('profilePic', userData.profilePic || '');
-    localStorage.setItem('userRole', userData.user_role || 'user');
+  setToken(token);
 
-    console.log('Stored user data in localStorage:', {
-      token: localStorage.getItem('token'),
-      userEmail: localStorage.getItem('userEmail'),
-      profilePic: localStorage.getItem('profilePic'),
-      userRole: localStorage.getItem('userRole'),
-    });
-  };
+  localStorage.setItem('token', token);
+  localStorage.setItem('userEmail', userData.email);
+  localStorage.setItem('profilePic', userData.profilePic || '');
+  localStorage.setItem('userRole', userData.user_role || 'user');
+
+  console.log('Stored user data in localStorage:', {
+    token: localStorage.getItem('token'),
+    userEmail: localStorage.getItem('userEmail'),
+    profilePic: localStorage.getItem('profilePic'),
+    userRole: localStorage.getItem('userRole'),
+  });
+
+
+  setInitialized(true);
+};
 
   const logout = () => {
     setUser(null);

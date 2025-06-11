@@ -124,7 +124,7 @@ export default function Register() {
                 </select>
               </div>
             </div>
-            <button type="submit" className="reg-button">
+            <button type="submit" className="book-modal-button">
               Register
             </button>
           </form>

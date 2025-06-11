@@ -26,3 +26,7 @@ dist-ssr
 *.sw?
 .vite
 .env
+
+wellness-app-key.pem
+start-iterm.sh
+restart.sh
