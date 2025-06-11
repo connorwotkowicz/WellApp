@@ -6,7 +6,7 @@ interface SearchBarProps {
   onCloseSearch: () => void;
 }
 
-export default function SearchBar({ onSearch, allItems, onCloseSearch }: SearchBarProps) {
+export default function SearchBar({ onSearch, onCloseSearch }: SearchBarProps) {
   return (
     <div>
       <input type="text" placeholder="Search..." onChange={(e) => onSearch(e.target.value)} />

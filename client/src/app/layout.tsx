@@ -3,7 +3,7 @@ import "../../styles/scss/App.scss";
 import ClientLayout from "./components/ClientLayout";
 import { Metadata } from "next";
 import { AuthProvider } from './context/AuthContext';  
-import { TestProvider } from './context/TestContext'; 
+
 import Footer from './components/Footer'; 
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";

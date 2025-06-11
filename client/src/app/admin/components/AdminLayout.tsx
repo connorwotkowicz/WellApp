@@ -1,7 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import AdminSidebar from './AdminSidebar';
 import AdminTopbar from './AdminTopbar';
-import { AuthContext } from '../../context/AuthContext';
 
 interface User {
   name?: string;
@@ -12,7 +11,6 @@ interface User {
 interface AdminLayoutProps {
   user: User | null;
   children: React.ReactNode;
-  
 }
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ user, children }) => {
@@ -34,7 +32,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ user, children }) => {
   return (
     <div className="admin-layout-wrapper">
       <div className="admin-console">
-        <AdminTopbar toggleSidebar={toggleSidebar} />
+        <AdminTopbar /> 
         <AdminSidebar user={user} isOpen={isSidebarOpen} />
         <div className="admin-content">
           <main className="admin-main">{children}</main>
