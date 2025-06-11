@@ -1,37 +1,37 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3001/api';
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
 
 export async function fetchProviders() {
-  const res = await fetch(`${API_BASE}/providers`);
+  const res = await fetch(`${API_BASE}/api/providers`);
   if (!res.ok) throw new Error('Failed to fetch providers');
   return res.json();
 }
 
 export async function fetchServices() {
-  const res = await fetch(`${API_BASE}/services`);
+  const res = await fetch(`${API_BASE}/api/services`);
   if (!res.ok) throw new Error('Failed to fetch services');
   return res.json();
 }
 
 export async function getProvider(id: string) {
-  const res = await fetch(`${API_BASE}/providers/${id}`);
+  const res = await fetch(`${API_BASE}/api/providers/${id}`);
   if (!res.ok) throw new Error('Failed to fetch provider');
   return res.json();
 }
 
 export async function getAllProviders() {
-  const res = await fetch(`${API_BASE}/providers`);
+  const res = await fetch(`${API_BASE}/api/providers`);
   if (!res.ok) throw new Error('Failed to fetch providers');
   return res.json();
 }
 
 export async function getAllBookings() {
-  const res = await fetch(`${API_BASE}/bookings`);
+  const res = await fetch(`${API_BASE}/api/bookings`);
   if (!res.ok) throw new Error('Failed to fetch bookings');
   return res.json();
 }
 
 export async function updateProviderStatus(id: string, status: string) {
-  const res = await fetch(`${API_BASE}/providers/${id}/status`, {
+  const res = await fetch(`${API_BASE}/api/providers/${id}/status`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

@@ -20,7 +20,7 @@ const SuccessPage = () => {
 
       try {
       
-        const response = await fetch(`/api/bookings/create-booking`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/bookings/create-booking`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

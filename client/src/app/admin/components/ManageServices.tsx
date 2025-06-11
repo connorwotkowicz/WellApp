@@ -25,23 +25,21 @@ const ManageServices: React.FC = () => {
   useEffect(() => {
     if (!initialized) return;
 
-    const fetchServices = async () => {
-      try {
-        const res = await axios.get('/api/services');
-        
-        if (res.status === 200) {
-          const data = res.data as Service[];
-          setServices(data);
-        } else {
-          console.error("Failed to fetch services: ", res.status);
-        }
+const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL || '';
 
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching services:', error);
-        setLoading(false);
-      }
-    };
+const fetchServices = async () => {
+  try {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/services`);
+    if (res.status === 200) {
+      setServices(res.data as Service[]);
+    }
+    setLoading(false);
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    setLoading(false);
+  }
+};
+
 
     fetchServices();
   }, [initialized]);

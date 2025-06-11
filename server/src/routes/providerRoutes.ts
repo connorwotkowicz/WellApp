@@ -4,25 +4,20 @@ import db from '../db';
 const router = express.Router();
 
 router.get('/', async (req: Request, res: Response): Promise<void> => {
-  console.log('📥 GET /api/providers');
-
   try {
-    console.log('⏳ Running DB query...');
-    const result = await db.query(
-      `SELECT providers.id, providers.name, providers.specialty, providers.image_url, providers.bio
-       FROM providers
-       ORDER BY providers.id`
-    );
-    console.log(' Query done:', result.rows.length, 'rows');
-
-    res.status(200).json(result.rows);
+    const result = await db.query(`
+      SELECT 
+        p.id AS provider_id,
+        p.name AS provider_name,
+        p.specialty,
+        p.image_url AS provider_image,
+        p.bio AS provider_bio
+      FROM providers p
+      ORDER BY p.id
+    `);
+    res.status(200).json(result.rows);  // Return the provider data
   } catch (err) {
-    if (err instanceof Error) {
-      console.error(' DB error:', err.message);
-      console.error(err.stack);
-    } else {
-      console.error('Unknown DB error:', err);
-    }
+    console.error('Error fetching providers:', err);
     res.status(500).json({ error: 'Failed to fetch providers' });
   }
 });
@@ -31,7 +26,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
 router.get('/:id', async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await db.query(
-      'SELECT id, name, service, price, specialty FROM providers WHERE id = $1',
+      'SELECT id, name, specialty, image_url, bio, COALESCE(service, \'No Service\') AS service FROM providers WHERE id = $1',
       [req.params.id]
     );
     if (result.rows.length === 0) {
@@ -44,6 +39,7 @@ router.get('/:id', async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ error: 'Failed to fetch provider' });
   }
 });
+
 
 router.put('/:id/status', async (req: Request, res: Response): Promise<void> => {
   const { status } = req.body;
@@ -59,11 +55,13 @@ router.put('/:id/status', async (req: Request, res: Response): Promise<void> => 
       'UPDATE providers SET status = $1 WHERE id = $2 RETURNING *',
       [status, id]
     );
+
     if (result.rows.length === 0) {
       res.status(404).json({ error: 'Provider not found' });
-    } else {
-      res.status(200).json(result.rows[0]);
+      return;
     }
+
+    res.status(200).json(result.rows[0]);
   } catch (err) {
     console.error('Error updating status:', err);
     res.status(500).json({ error: 'Failed to update status' });
@@ -72,12 +70,12 @@ router.put('/:id/status', async (req: Request, res: Response): Promise<void> => 
 
 router.put('/:id', async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
-  const { name, service, price } = req.body;
+  const { name, specialty, bio, image_url } = req.body;
 
   try {
     const result = await db.query(
-      'UPDATE providers SET name = $1, service = $2, price = $3 WHERE id = $4 RETURNING *',
-      [name, service, price, id]
+      'UPDATE providers SET name = $1, specialty = $2, bio = $3, image_url = $4 WHERE id = $5 RETURNING *',
+      [name, specialty, bio, image_url, id]
     );
 
     if (result.rows.length === 0) {
@@ -85,7 +83,7 @@ router.put('/:id', async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    res.status(200).json(result.rows[0]); 
+    res.status(200).json(result.rows[0]);
   } catch (err) {
     console.error('Error updating provider:', err);
     res.status(500).json({ error: 'Failed to update provider' });

@@ -2,7 +2,7 @@ import { Response } from 'express';
 import db from '../db';
 import { AuthRequest } from '../middleware/authMiddleware';
 
-export const createBooking = async (req: AuthRequest, res: Response) => {
+export const createBooking = async (req: AuthRequest, res: Response): Promise<Response> => {
   try {
     const userId = req.userId!;
     const { providerId, serviceId, time } = req.body;
@@ -20,17 +20,17 @@ export const createBooking = async (req: AuthRequest, res: Response) => {
     );
 
     if (result.rows.length > 0) {
-      res.status(201).json({ booking: result.rows[0] });
+      return res.status(201).json({ booking: result.rows[0] });
     } else {
-      res.status(409).json({ error: 'Booking already exists for this time' });
+      return res.status(409).json({ error: 'Booking already exists for this time' });
     }
   } catch (err: any) {
     console.error('Error creating booking:', err.message, err.stack);
-    res.status(500).json({ error: 'Failed to create booking' });
+    return res.status(500).json({ error: 'Failed to create booking' });
   }
 };
 
-export const getUserBookings = async (req: AuthRequest, res: Response) => {
+export const getUserBookings = async (req: AuthRequest, res: Response): Promise<Response> => {
   try {
     const userId = req.userId!;
 
@@ -64,9 +64,9 @@ export const getUserBookings = async (req: AuthRequest, res: Response) => {
       },
     }));
 
-    res.json(bookings);
+    return res.json(bookings);
   } catch (err: any) {
     console.error('Error fetching bookings:', err.message, err.stack);
-    res.status(500).json({ error: 'Failed to fetch bookings' });
+    return res.status(500).json({ error: 'Failed to fetch bookings' });
   }
 };
