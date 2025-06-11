@@ -123,9 +123,35 @@ const CheckoutPage = () => {
     setError(null);
   };
 
-  const handlePaymentSuccess = () => {
-    router.push('/checkout/success');
-  };
+const handlePaymentSuccess = async () => {
+  try {
+    const storedProvider = localStorage.getItem('selectedProvider');
+    if (!storedProvider) return;
+
+    const provider = JSON.parse(storedProvider);
+
+    const bookingResponse = await fetch('/api/bookings/create-booking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        providerId: provider.id,
+        serviceId: provider.service_id || 1, 
+        time: selectedTime,
+        userId: userId, 
+      }),
+    });
+
+    const bookingData = await bookingResponse.json();
+    console.log('Booking created:', bookingData);
+  } catch (err) {
+    console.error('Failed to create booking after payment:', err);
+  }
+
+  router.push('/checkout/success');
+};
+
 
   const handlePaymentCancel = () => {
     router.push('/checkout/cancel');

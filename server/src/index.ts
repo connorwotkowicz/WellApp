@@ -19,7 +19,8 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = parseInt(process.env.PORT || '3001', 10);
+
 
 app.use(cors());
 app.use(express.json());
@@ -27,6 +28,7 @@ app.use(express.json());
 app.get('/api/health', (req, res) => {
   res.json({ status: 'Wellness API is up!' });
 });
+
 
 
 app.use('/api/providers', providerRoutes);
@@ -38,9 +40,15 @@ app.use('/api/checkout', checkoutRoutes);
 app.use('/api/payment', paymentRoutes); 
 
 
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.get('/api/test', (_req, res) => {
+  res.json({ message: 'Backend is alive!' });
 });
+
+
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
+});
+
 
 export default app;

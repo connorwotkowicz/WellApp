@@ -21,7 +21,8 @@ export default function ProviderListPage() {
     
     const fetchProviders = async () => {
 try {
-  const response = await fetch('/api/providers');
+ const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/providers`);
+
   const data = await response.json();
   setProviders(data);
 } catch (error) {
