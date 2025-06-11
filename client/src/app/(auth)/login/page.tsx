@@ -18,42 +18,51 @@ export default function Login() {
     emailRef.current?.focus();
   }, []);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setError('');
+const handleSubmit = async (event: React.FormEvent) => {
+  event.preventDefault();
+  setError('');
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
+    console.log('Login Response Data:', data); // Log the response from the backend
 
-      if (!data.token || !data.user) throw new Error('Invalid login response');
+    if (!data.token || !data.user) throw new Error('Invalid login response');
 
+    // Store data in localStorage
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('userEmail', data.user.email);
+    localStorage.setItem('userRole', data.user.user_role);
 
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userEmail', data.user.email);
-      localStorage.setItem('userName', data.user.name);
-      localStorage.setItem('userRole', data.user.user_role);
+    console.log('Stored data in localStorage:', {
+      token: localStorage.getItem('token'),
+      userEmail: localStorage.getItem('userEmail'),
+      userRole: localStorage.getItem('userRole'),
+    });
 
-  
-      login(data.user, data.token);
+    login(data.user, data.token);
 
-      if (data.user.user_role === 'admin') {
-        toast.success(`Welcome Admin ${data.user.name}`, { autoClose: 2500 });
-        router.push('/admin');
-      } else {
-        toast.success(`Welcome back, ${data.user.name}`, { autoClose: 2500 });
-        router.push('/account'); 
-      }
-    } catch (err: any) {
-      setError(err.message);
-      toast.error(`Error: ${err.message}`, { autoClose: 2500 }); 
+    if (data.user.user_role === 'admin') {
+      toast.success(`Welcome Admin ${data.user.name}`, { autoClose: 2500 });
+      router.push('/admin');
+    } else {
+      toast.success(`Welcome back, ${data.user.name}`, { autoClose: 2500 });
+      router.push('/account'); 
     }
-  };
+  } catch (err: any) {
+    setError(err.message);
+    toast.error(`Error: ${err.message}`, { autoClose: 2500 }); 
+  }
+};
+
+
+
+
 
   return (
     <div className="login-page">

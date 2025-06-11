@@ -9,10 +9,10 @@ export const getAllProviders = async (req: Request, res: Response) => {
       FROM providers
       ORDER BY id
     `);
-    console.log('✅ Providers fetched:', result.rows.length);
+    console.log('Providers fetched:', result.rows.length);
     res.status(200).json(result.rows);
   } catch (error: any) {
-    console.error('❌ ERROR fetching providers:', error);
+    console.error('ERROR fetching providers:', error);
     res.status(500).json({ error: error.message || 'Error fetching providers' });
   }
 };

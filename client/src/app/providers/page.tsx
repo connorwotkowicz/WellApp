@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Sun, Edit, Moon, Leaf, User } from 'lucide-react'; 
 import { useEffect, useState } from 'react';
@@ -18,23 +18,27 @@ export default function ProviderListPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    
     const fetchProviders = async () => {
-try {
- const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/providers`);
+      try {
+        console.log('Fetching providers from:', `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/providers`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/providers`);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch providers: ${response.statusText}`);
+        }
 
-  const data = await response.json();
-  setProviders(data);
-} catch (error) {
-  if (error instanceof Error) {
-    setError(error.message);
-  } else {
-    setError("An unknown error occurred");
-  }
-} finally {
-  setLoading(false);
-}
-
+        const data = await response.json();
+        console.log('Fetched Providers:', data);  // Log the response
+        setProviders(data);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unknown error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchProviders();
@@ -63,7 +67,6 @@ try {
                     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
                   }}
                 >
-               
                   {provider.specialty === 'Yoga' && <Sun size={60} color="#9DBB8C" />}
                   {provider.specialty === 'Meditation' && <Moon size={60} color="#9DBB8C" />}
                   {provider.specialty === 'Therapy' && <Edit size={60} color="#9DBB8C" />}

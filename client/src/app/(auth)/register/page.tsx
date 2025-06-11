@@ -75,7 +75,7 @@ export default function Register() {
 
       <div className="register-container">
         <div className="my-beat">
-          <h3>myW2k25</h3>
+          <h3>Well2k25</h3>
         </div>
 
         <div className="inner-content">

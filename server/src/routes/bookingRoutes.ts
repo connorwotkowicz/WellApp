@@ -21,14 +21,17 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
       LEFT JOIN services s ON b.service_id = s.id
       LEFT JOIN providers p ON b.provider_id = p.id
       LEFT JOIN users u ON b.user_id = u.id
+      ORDER BY b.created_at DESC
     `);
-    res.status(200).json(result.rows);
+    res.status(200).json(result.rows);  // Return the bookings data
   } catch (err: unknown) {
     console.error('Error fetching bookings:', err);
     res.status(500).json({ error: 'Failed to fetch bookings' });
   }
 });
 
+
+// Update a booking
 router.put('/:id', async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   const { provider_id, service_id, time, status } = req.body;
@@ -51,17 +54,16 @@ router.put('/:id', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
+// Create a new booking
 router.post('/create-booking', async (req: Request, res: Response): Promise<void> => {
   const { providerId, serviceId, time, userId } = req.body;
 
-  
   if (!providerId || !serviceId || !time || !userId) {
     res.status(400).json({ error: 'Missing required fields' });
     return;
   }
 
   try {
-    
     const result = await db.query(
       `INSERT INTO bookings (user_id, provider_id, service_id, time, status)
        VALUES ($1, $2, $3, $4, 'confirmed')
@@ -69,7 +71,6 @@ router.post('/create-booking', async (req: Request, res: Response): Promise<void
       [userId, providerId, serviceId, time]
     );
 
-    
     if (result.rows.length > 0) {
       res.status(201).json({ booking: result.rows[0] });
     } else {
@@ -81,9 +82,7 @@ router.post('/create-booking', async (req: Request, res: Response): Promise<void
   }
 });
 
-
-
-
+// Delete a booking
 router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
 
@@ -102,6 +101,7 @@ router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
+// Update booking status
 router.put('/:id/status', async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   const { status } = req.body;
