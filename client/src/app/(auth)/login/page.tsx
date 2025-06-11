@@ -33,9 +33,14 @@ export default function Login() {
 
       if (!data.token || !data.user) throw new Error('Invalid login response');
 
-      login(data.user, data.token);
+
       localStorage.setItem('token', data.token);
       localStorage.setItem('userEmail', data.user.email);
+      localStorage.setItem('userName', data.user.name);
+      localStorage.setItem('userRole', data.user.user_role);
+
+  
+      login(data.user, data.token);
 
       if (data.user.user_role === 'admin') {
         toast.success(`Welcome Admin ${data.user.name}`, { autoClose: 2500 });
@@ -46,6 +51,7 @@ export default function Login() {
       }
     } catch (err: any) {
       setError(err.message);
+      toast.error(`Error: ${err.message}`, { autoClose: 2500 }); 
     }
   };
 
@@ -55,7 +61,7 @@ export default function Login() {
 
       <div className="login-container">
         <div className="my-discog">
-          <h3>well2k25</h3>
+          <h3>Well2k25</h3>
         </div>
 
         <div className="inner-content">
@@ -66,7 +72,7 @@ export default function Login() {
 
           <div className="login-instr">
             <h4>
-              Log in to DiscogMVP with your email. If you don't have an account,
+              Log in to Well2K with your email. If you don't have an account,
               click the link below to create one.
             </h4>
           </div>
@@ -95,8 +101,8 @@ export default function Login() {
           </form>
 
           <div className="login-instr">
-                <hr style={{ flex: 1, border: 'none', borderTop: '1px solid #ccc' }} />
-            <h4>New to DiscogMVP?</h4>
+            <hr style={{ flex: 1, border: 'none', borderTop: '1px solid #ccc' }} />
+            <h4>New here?</h4>
             <div className="sign-up-link">
               <Link href="/register">
                 <h4>Sign up</h4>
