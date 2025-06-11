@@ -7,7 +7,7 @@
 ![Vercel](https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)
 
-A **web-based wellness platform** where users can book 1:1 sessions with vetted wellness practitioners. The focus is on streamlined Progressive Web App (PWA) experience.
+A **web-based wellness platform** where users can book 1:1 sessions with vetted practitioners. The focus is on streamlined Progressive Web App (PWA) experience.
 
 > **Note**: This project is a **work in progress**. The application has not yet been deployed, and features are still being implemented and tested. Some functionality is still being refined and added, and the README will be updated accordingly.
 
