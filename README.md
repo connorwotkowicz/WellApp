@@ -7,7 +7,7 @@
 ![Vercel](https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)
 
-A **web-based wellness platform** where users can book 1:1 sessions with vetted wellness practitioners in areas like yoga, meditation, etc. This platform is focused on delivering a **clean, streamlined Progressive Web App (PWA)** experience, emphasizing ease of use, scalability, and backend infrastructure.
+A **web-based wellness platform** where users can book 1:1 sessions with vetted wellness practitioners. The focus is on streamlined Progressive Web App (PWA) experience.
 
 > **Note**: This project is a **work in progress**. The application has not yet been deployed, and features are still being implemented and tested. Some functionality is still being refined and added, and the README will be updated accordingly.
 
@@ -63,11 +63,10 @@ This application is still under active development, and the following features a
 
 ---
 
-## Basic Setup
+## Basic Setup, currently *very* basic
 >More information to add later
 
 ### Backend Setup
-1. Navigate to the `server` directory:
 ```bash
 cd server
 npm install
