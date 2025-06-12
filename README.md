@@ -41,13 +41,13 @@
 - JWT authentication
 - > Google OAuth
 - Bcrypt for password hashing
-- > Helmet
+- Helmet
 - CORS
 
 ### Payments
-> Stripe Checkout and Stripe Elements
-> Stripe Node SDK
-> Guest checkout flow
+- > Stripe Checkout and Stripe Elements
+- > Stripe Node SDK
+- > Guest checkout flow
 
 ### Dev Tools & Deployment
 - ngrok for local testing
@@ -59,7 +59,7 @@
 
 ### Testing
 - > Jest
-- React Testing Library
+- > React Testing Library
 - > Supertest
 
 
