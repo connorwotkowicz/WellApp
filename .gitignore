@@ -30,3 +30,7 @@ dist-ssr
 wellness-app-key.pem
 start-iterm.sh
 restart.sh
+
+
+
+generate-hash.js

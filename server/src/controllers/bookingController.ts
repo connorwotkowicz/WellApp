@@ -4,17 +4,16 @@ import { AuthRequest } from '../middleware/authMiddleware';
 
 export const createBooking = async (req: AuthRequest, res: Response): Promise<Response> => {
   try {
-    const userId = req.userId!;
+    const userId = req.userId;  
     const { providerId, serviceId, time } = req.body;
 
-    if (!providerId || !serviceId || !time) {
+    if (!userId || !providerId || !serviceId || !time) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
     const result = await db.query(
       `INSERT INTO bookings (user_id, provider_id, service_id, time, status)
        VALUES ($1, $2, $3, $4, 'confirmed')
-       ON CONFLICT (user_id, provider_id, time) DO NOTHING 
        RETURNING *`,
       [userId, providerId, serviceId, time]
     );
@@ -29,6 +28,8 @@ export const createBooking = async (req: AuthRequest, res: Response): Promise<Re
     return res.status(500).json({ error: 'Failed to create booking' });
   }
 };
+
+
 
 export const getUserBookings = async (req: AuthRequest, res: Response): Promise<Response> => {
   try {

@@ -23,7 +23,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
       LEFT JOIN users u ON b.user_id = u.id
       ORDER BY b.created_at DESC
     `);
-    res.status(200).json(result.rows);  // Return the bookings data
+    res.status(200).json(result.rows);  
   } catch (err: unknown) {
     console.error('Error fetching bookings:', err);
     res.status(500).json({ error: 'Failed to fetch bookings' });
@@ -31,7 +31,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
 });
 
 
-// Update a booking
+
 router.put('/:id', async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   const { provider_id, service_id, time, status } = req.body;
@@ -54,8 +54,10 @@ router.put('/:id', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
-// Create a new booking
+
 router.post('/create-booking', async (req: Request, res: Response): Promise<void> => {
+  console.log('Request Body:', req.body);  
+
   const { providerId, serviceId, time, userId } = req.body;
 
   if (!providerId || !serviceId || !time || !userId) {
@@ -82,7 +84,8 @@ router.post('/create-booking', async (req: Request, res: Response): Promise<void
   }
 });
 
-// Delete a booking
+
+
 router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
 
@@ -101,7 +104,7 @@ router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
-// Update booking status
+
 router.put('/:id/status', async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   const { status } = req.body;
