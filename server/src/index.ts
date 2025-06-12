@@ -13,7 +13,6 @@ import availabilityRoutes from './routes/availabilityRoutes';
 const checkoutRoutes = require('./routes/checkout');
 const userRoutes = require('./routes/userRoutes');
 
-
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 console.log('JWT_SECRET:', process.env.JWT_SECRET);
@@ -22,21 +21,30 @@ const app = express();
 const PORT = parseInt(process.env.PORT || '3001', 10);
 
 
-
 const allowedOrigins = [
-  'http://localhost:3000',          
-  'https://wellness2k.app.vercel.app', 
-  'https://rorodev.ngrok.app'      
+  'http://localhost:3000',
+  'https://wellness2k.app.vercel.app',
+  'https://rorodev.ngrok.app'
 ];
 
 
+const allowedPatterns = [
+  /^https:\/\/wellness2k25-.*\.vercel\.app$/,
+  /^https:\/\/.*-connorwotkowiczs-projects\.vercel\.app$/
+];
+
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+
+    if (!origin) return callback(null, true);
+  
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
     }
+    if (allowedPatterns.some(pattern => pattern.test(origin))) {
+      return callback(null, true);
+    }
+    callback(null, false);
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -44,8 +52,9 @@ const corsOptions: cors.CorsOptions = {
 };
 
 app.use(helmet());
-app.use(cors(corsOptions));  
+app.use(cors(corsOptions));
 app.use(express.json());
+
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'Wellness API is up!' });
@@ -65,7 +74,6 @@ app.get('/api/test', (_req, res) => {
 });
 
 console.log('Using DB URL:', process.env.DATABASE_URL);
-
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on http://0.0.0.0:${PORT}`);
