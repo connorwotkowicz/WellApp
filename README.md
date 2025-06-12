@@ -18,7 +18,7 @@
 
 ## Tech Stack
 
-> Items marked with `>` are planned or not yet completed.
+> Grey items are planned or not yet completed.
 
 ### Frontend
 - Next.js 14 (App Router)
@@ -39,7 +39,7 @@
 
 ### Authentication & Security
 - JWT authentication
-- > Google OAuth
+- Google OAuth
 - Bcrypt for password hashing
 - Helmet
 - CORS
