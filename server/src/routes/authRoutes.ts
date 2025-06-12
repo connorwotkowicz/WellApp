@@ -1,12 +1,10 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { registerUser, loginUser } from '../controllers/authController';
 
 const router = express.Router();
 
-
-router.post('/register', registerUser as express.RequestHandler);
-
-
-router.post('/login', loginUser as express.RequestHandler);
+// Register and login routes
+router.post('/register', registerUser); // No need for type assertion
+router.post('/login', loginUser);       // No need for type assertion
 
 export default router;

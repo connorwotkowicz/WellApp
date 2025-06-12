@@ -23,29 +23,33 @@ const handleSubmit = async (event: React.FormEvent) => {
   setError('');
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
+const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, {
+  
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+});
+
+
 
     const data = await res.json();
-    console.log('Login Response Data:', data); // Log the response from the backend
+    console.log('Login Response Data:', data); 
 
-    if (!data.token || !data.user) throw new Error('Invalid login response');
+if (!data.token || !data.user) throw new Error('Invalid login response');
 
-    // Store data in localStorage
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('userEmail', data.user.email);
-    localStorage.setItem('userRole', data.user.user_role);
 
+localStorage.setItem('token', data.token);
+localStorage.setItem('userEmail', data.user.email);
+localStorage.setItem('userRole', data.user.user_role);
+
+      login(data.user, data.token);
     console.log('Stored data in localStorage:', {
       token: localStorage.getItem('token'),
       userEmail: localStorage.getItem('userEmail'),
       userRole: localStorage.getItem('userRole'),
     });
 
-    login(data.user, data.token);
+   
 
     if (data.user.user_role === 'admin') {
       toast.success(`Welcome Admin ${data.user.name}`, { autoClose: 2500 });
