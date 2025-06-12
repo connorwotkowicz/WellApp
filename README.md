@@ -65,7 +65,7 @@
 
 ---
 
-## Features
+## Basic Features
 
 ### Users:
 - Browse wellness services
