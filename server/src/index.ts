@@ -9,8 +9,10 @@ import paymentRoutes from './routes/paymentRoutes';
 import bookingRoutes from './routes/bookingRoutes';
 import authRoutes from "./routes/authRoutes";
 import helmet from 'helmet';
+import availabilityRoutes from './routes/availabilityRoutes';
 const checkoutRoutes = require('./routes/checkout');
 const userRoutes = require('./routes/userRoutes');
+
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
@@ -20,13 +22,25 @@ const app = express();
 const PORT = parseInt(process.env.PORT || '3001', 10);
 
 
-const corsOptions = {
-  origin: [
-    'https://wellness2k25.vercel.app',
-    'https://f268-18-220-85-203.ngrok-free.app'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
+
+const allowedOrigins = [
+  'http://localhost:3000',          
+  'https://welness2k.app.vercel.app', 
+  'https://rorodev.ngrok.app'      
+];
+
+
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 };
 
 app.use(helmet());
@@ -44,6 +58,7 @@ app.use('/api/bookings', bookingRoutes);
 app.use("/api/auth", authRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/payment', paymentRoutes); 
+app.use('/api/availability', availabilityRoutes);
 
 app.get('/api/test', (_req, res) => {
   res.json({ message: 'Backend is alive!' });

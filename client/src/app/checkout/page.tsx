@@ -28,10 +28,18 @@ const CheckoutPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [provider, setProvider] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+const [availableSlots, setAvailableSlots] = useState<any[]>([]);
+const [selectedSlot, setSelectedSlot] = useState<string>(''); 
+const [providerId, setProviderId] = useState<string | null>(null);
 
   
   const [showSummary, setShowSummary] = useState(false);
 
+
+
+
+
+  
   useEffect(() => {
     const user = getUserIdFromToken();
     setUserId(user ? parseInt(user, 10) : null);  
@@ -49,6 +57,22 @@ const CheckoutPage = () => {
     router.push('/bookings');  
   }
 }, [router]);
+
+
+
+useEffect(() => {
+  const queryParams = new URLSearchParams(window.location.search);
+  const pid = queryParams.get('providerId');
+  if (pid) {
+    setProviderId(pid);
+    fetch(`/api/availability/${pid}`)
+      .then((res) => res.json())
+      .then((slots) => setAvailableSlots(slots))
+      .catch((err) => console.error('Error fetching slots:', err));
+  }
+}, []);
+
+
 
   useEffect(() => {
     localStorage.setItem('currentStep', currentStep);
@@ -312,6 +336,20 @@ const handlePaymentSuccess = async () => {
           <span><strong>Duration</strong></span>
           <span>{provider.duration} minutes</span>  
         </div>
+
+        {availableSlots.length > 0 && (
+  <div className="slot-picker">
+    <label>Select a time slot:</label>
+    <select value={selectedSlot} onChange={(e) => setSelectedSlot(e.target.value)}>
+      <option value="">-- Select --</option>
+      {availableSlots.map((slot) => (
+        <option key={slot.id} value={slot.start_time}>
+          {new Date(slot.start_time).toLocaleString()}
+        </option>
+      ))}
+    </select>
+  </div>
+)}
 
                   <div className='summary-line'>
                     <span>Subtotal</span>

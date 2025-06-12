@@ -43,7 +43,6 @@
 - Bcrypt for password hashing
 - Helmet
 - CORS
-
 ### Payments
 - > Stripe Checkout and Stripe Elements
 - > Stripe Node SDK

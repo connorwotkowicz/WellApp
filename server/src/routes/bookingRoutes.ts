@@ -136,3 +136,9 @@ router.put('/:id/status', async (req: Request, res: Response): Promise<void> => 
 });
 
 export default router;
+
+
+
+
+////// availability 
+
