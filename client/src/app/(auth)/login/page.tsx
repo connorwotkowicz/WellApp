@@ -4,7 +4,33 @@ import { useState, useRef, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
-import { AuthContext } from '../../context/AuthContext'; 
+import axios from 'axios';
+
+import { AuthContext } from '../../context/AuthContext';
+
+const API = process.env.NEXT_PUBLIC_API_BASE_URL!;
+
+interface LoginResponse {
+  token: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    user_role: string;
+  };
+}
+
+// Fallback type guard for axios error
+function isAxiosErrorWithMessage(err: unknown): err is { response: { data: { message?: string } } } {
+  return (
+    typeof err === 'object' &&
+    err !== null &&
+    'response' in err &&
+    typeof (err as any).response === 'object' &&
+    'data' in (err as any).response &&
+    typeof (err as any).response.data === 'object'
+  );
+}
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -18,55 +44,50 @@ export default function Login() {
     emailRef.current?.focus();
   }, []);
 
-const handleSubmit = async (event: React.FormEvent) => {
-  event.preventDefault();
-  setError('');
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError('');
 
-  try {
-const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, {
-  
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-});
+    try {
+      const res = await axios.post<LoginResponse>(`${API}/api/auth/login`, {
+        email,
+        password,
+      });
 
+      const data = res.data;
 
+      if (!data.token || !data.user) {
+        throw new Error('Invalid login response');
+      }
 
-    const data = await res.json();
-    console.log('Login Response Data:', data); 
-
-if (!data.token || !data.user) throw new Error('Invalid login response');
-
-
-localStorage.setItem('token', data.token);
-localStorage.setItem('userEmail', data.user.email);
-localStorage.setItem('userRole', data.user.user_role);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userEmail', data.user.email);
+      localStorage.setItem('userRole', data.user.user_role);
 
       login(data.user, data.token);
-    console.log('Stored data in localStorage:', {
-      token: localStorage.getItem('token'),
-      userEmail: localStorage.getItem('userEmail'),
-      userRole: localStorage.getItem('userRole'),
-    });
 
-   
+      if (data.user.user_role === 'admin') {
+        toast.success(`Welcome Admin ${data.user.name}`, { autoClose: 2500 });
+        router.push('/admin');
+      } else {
+        toast.success(`Welcome back, ${data.user.name}`, { autoClose: 2500 });
+        router.push('/account');
+      }
 
-    if (data.user.user_role === 'admin') {
-      toast.success(`Welcome Admin ${data.user.name}`, { autoClose: 2500 });
-      router.push('/admin');
-    } else {
-      toast.success(`Welcome back, ${data.user.name}`, { autoClose: 2500 });
-      router.push('/account'); 
+    } catch (err: unknown) {
+      console.error('Login error:', err);
+
+      const message =
+        isAxiosErrorWithMessage(err) && err.response.data?.message
+          ? err.response.data.message
+          : err instanceof Error
+          ? err.message
+          : 'Login failed';
+
+      setError(message);
+      toast.error(`Error: ${message}`, { autoClose: 2500 });
     }
-  } catch (err: any) {
-    setError(err.message);
-    toast.error(`Error: ${err.message}`, { autoClose: 2500 }); 
-  }
-};
-
-
-
-
+  };
 
   return (
     <div className="login-page">

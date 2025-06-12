@@ -4,13 +4,38 @@ import { useState, useRef, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
+import axios from 'axios';
+
 import { AuthContext } from '../../context/AuthContext';
+
+const API = process.env.NEXT_PUBLIC_API_BASE_URL!;
+
+interface RegisterResponse {
+  token: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    user_role: string;
+  };
+}
+
+function isAxiosErrorWithMessage(err: unknown): err is { response: { data: { error?: string } } } {
+  return (
+    typeof err === 'object' &&
+    err !== null &&
+    'response' in err &&
+    typeof (err as any).response === 'object' &&
+    'data' in (err as any).response &&
+    typeof (err as any).response.data === 'object'
+  );
+}
 
 export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'user' | 'provider'>('user'); 
+  const [role, setRole] = useState<'user' | 'provider'>('user');
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { login } = useContext(AuthContext);
@@ -24,54 +49,50 @@ export default function Register() {
     event.preventDefault();
     setError(null);
 
-
     if (password.length < 8) {
       toast.error('Password must be at least 8 characters.');
       return;
     }
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, role }),
+      const res = await axios.post<RegisterResponse>(`${API}/api/auth/register`, {
+        name,
+        email,
+        password,
+        role,
       });
 
-      const data = await res.json();
+      const data = res.data;
 
-      if (!res.ok || !data.token || !data.user) {
-        if (res.status === 409 || data.error?.includes('exists')) {
-          toast.error('An account with this email already exists.');
-        } else {
-          toast.error(data.error || 'Registration failed.');
-        }
-        throw new Error(data.error || `Registration failed (${res.status})`);
+      if (!data.token || !data.user) {
+        throw new Error('Invalid registration response');
       }
-
-
 
       login(data.user, data.token);
       localStorage.setItem('token', data.token);
       localStorage.setItem('userEmail', data.user.email);
+      localStorage.setItem('userRole', data.user.user_role);
 
       toast.success('Registration successful! Welcome!');
-      
-
-      setName('');
-      setEmail('');
-      setPassword('');
-
-
       router.push('/account');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Registration error:', err);
-      setError(err.message);
+
+      const message =
+        isAxiosErrorWithMessage(err) && err.response.data?.error
+          ? err.response.data.error
+          : err instanceof Error
+          ? err.message
+          : 'Registration failed';
+
+      setError(message);
+      toast.error(message);
     }
   };
 
   return (
     <div className="register-page">
-      <div className="logo-wrapper">{}</div>
+      <div className="logo-wrapper"></div>
 
       <div className="register-container">
         <div className="my-beat">
@@ -81,7 +102,11 @@ export default function Register() {
         <div className="inner-content">
           <div className="logreg-title">
             <h2>Register</h2>
-            {error && <p className="error-message">This email is already associated with another account</p>}
+            {error && (
+              <p className="error-message">
+                {error.includes('exists') ? 'This email is already associated with another account' : error}
+              </p>
+            )}
           </div>
 
           <div className="login-instr">
@@ -141,7 +166,12 @@ export default function Register() {
           </div>
 
           <div className="sign-up-link">
-            <p>Already have an account? <Link href="/login"><strong>Login</strong></Link></p>
+            <p>
+              Already have an account?{' '}
+              <Link href="/login">
+                <strong>Login</strong>
+              </Link>
+            </p>
           </div>
         </div>
       </div>
