@@ -22,8 +22,8 @@ const PORT = parseInt(process.env.PORT || '3001', 10);
 
 const corsOptions = {
   origin: [
-    'http://localhost:3000',
-    'https://49b4-67-250-58-33.ngrok-free.app'
+    'https://wellness2k25.vercel.app',
+    'https://f268-18-220-85-203.ngrok-free.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
