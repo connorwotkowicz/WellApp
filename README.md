@@ -5,7 +5,6 @@
 ![JWT](https://img.shields.io/badge/JWT-000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
 ![SCSS](https://img.shields.io/badge/SCSS-cc6699?style=for-the-badge&logo=sass&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=vercel&logoColor=white)
-![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)
 ![ngrok](https://img.shields.io/badge/ngrok-1F1E37?style=for-the-badge&logo=ngrok&logoColor=white)
 ![Stripe](https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
@@ -19,10 +18,13 @@
 
 ## Tech Stack
 
+> Items marked with `>` are planned or not yet implemented.
+
 ### Frontend
 - Next.js 14 (App Router)
 - React
 - TypeScript
+- Javascript
 - SCSS Modules
 - Context API for state management
 - Vite (early development)
@@ -37,26 +39,28 @@
 
 ### Authentication & Security
 - JWT authentication
-- Google OAuth
+> Google OAuth
 - Bcrypt for password hashing
-- Helmet
+> Helmet
 - CORS
 
 ### Payments
-- Stripe Checkout and Stripe Elements
-- Stripe Node SDK
+> Stripe Checkout and Stripe Elements
+> Stripe Node SDK
+> Guest checkout flow
 
 ### Dev Tools & Deployment
 - ngrok for local testing
 - Vercel (frontend)
-- Render / AWS EC2 (backend)
+- AWS EC2 (backend)
+> Render if needed
 - Supabase (database)
 - Axios
 
 ### Testing
-- Jest
+> Jest
 - React Testing Library
-- Supertest
+> Supertest
 
 
 ---
