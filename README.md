@@ -18,7 +18,7 @@
 
 ## Tech Stack
 
-> Items marked with `>` are planned or not yet implemented.
+> Items marked with `>` are planned or not yet completed.
 
 ### Frontend
 - Next.js 14 (App Router)
