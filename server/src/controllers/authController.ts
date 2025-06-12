@@ -19,7 +19,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
     // Check if the role is valid
     if (!['user', 'admin', 'provider'].includes(role)) {
       res.status(400).json({ error: 'Invalid role. Valid roles are user, admin, and provider.' });
-      return; // Just return after sending the response
+      return;
     }
 
     // Check if the user already exists
@@ -49,10 +49,8 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
       );
     }
 
-
     const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET!, { expiresIn: '7d' });
 
- 
     res.status(201).json({ user, token });
   } catch (error) {
     console.error(error);
@@ -60,34 +58,37 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-
+// Login user route handler
 export const loginUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { email, password } = req.body;
 
-  try {
+  // 🔍 Diagnostic logs
+  console.log('LOGIN ATTEMPT:', { email, password });
 
+  try {
     const userResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
     const user: User | undefined = userResult.rows[0];
+
+    console.log('USER FOUND:', user);
 
     if (!user) {
       res.status(401).json({ error: 'Invalid credentials' });
       return;
     }
 
-
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log('PASSWORD MATCH:', isMatch);
+
     if (!isMatch) {
       res.status(401).json({ error: 'Invalid credentials' });
       return;
     }
 
- 
     const token = jwt.sign(
       { userId: user.id, role: user.role },
       process.env.JWT_SECRET!,
       { expiresIn: '7d' }
     );
-
 
     res.status(200).json({
       user: {
@@ -99,7 +100,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
       token,
     });
   } catch (error) {
-    console.error(error);
+    console.error('LOGIN ERROR:', error);
     next(error);
   }
 };
