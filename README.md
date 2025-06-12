@@ -20,21 +20,44 @@
 ## Tech Stack
 
 ### Frontend
-- **Next.js 14+** (App Router)
-- React - Next.js
-- SCSS Modules 
+- Next.js 14 (App Router)
+- React
+- TypeScript
+- SCSS Modules
 - Context API for state management
+- Vite (early development)
+- React Router (prior to migration)
 
 ### Backend
-- **Express.js**
 - Node.js
-- PostgreSQL 
+- Express.js
 - RESTful API
+- PostgreSQL (hosted on Supabase)
+- pg + dotenv
 
 ### Authentication & Security
-- JWT Authentication
-- Bcrypt 
-- Helmet & CORS middleware 
+- JWT authentication
+- Google OAuth
+- Bcrypt for password hashing
+- Helmet
+- CORS
+
+### Payments
+- Stripe Checkout and Stripe Elements
+- Stripe Node SDK
+
+### Dev Tools & Deployment
+- ngrok for local testing
+- Vercel (frontend)
+- Render / AWS EC2 (backend)
+- Supabase (database)
+- Axios
+
+### Testing
+- Jest
+- React Testing Library
+- Supertest
+
 
 ---
 
