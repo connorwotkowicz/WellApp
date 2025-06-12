@@ -57,30 +57,26 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
     next(error); 
   }
 };
-
-// Login user route handler
 export const loginUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { email, password } = req.body;
 
-  // 🔍 Diagnostic logs
-  console.log('LOGIN ATTEMPT:', { email, password });
+  console.log('LOGIN ATTEMPT →', email, password);
 
   try {
     const userResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
-    const user: User | undefined = userResult.rows[0];
-
-    console.log('USER FOUND:', user);
+    const user = userResult.rows[0];
+    console.log('USER FROM DB →', user);
 
     if (!user) {
-      res.status(401).json({ error: 'Invalid credentials' });
+      res.status(401).json({ error: 'Invalid credentials - no user' });
       return;
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log('PASSWORD MATCH:', isMatch);
+    console.log('PASSWORD MATCH? →', isMatch);
 
     if (!isMatch) {
-      res.status(401).json({ error: 'Invalid credentials' });
+      res.status(401).json({ error: 'Invalid credentials - password mismatch' });
       return;
     }
 
@@ -99,8 +95,8 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
       },
       token,
     });
-  } catch (error) {
-    console.error('LOGIN ERROR:', error);
-    next(error);
+  } catch (err) {
+    console.error('LOGIN ERROR:', err);
+    next(err);
   }
 };

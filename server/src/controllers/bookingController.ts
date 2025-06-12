@@ -4,30 +4,47 @@ import { AuthRequest } from '../middleware/authMiddleware';
 
 export const createBooking = async (req: AuthRequest, res: Response): Promise<Response> => {
   try {
-    const userId = req.userId;  
+    const userId = req.userId;
     const { providerId, serviceId, time } = req.body;
 
     if (!userId || !providerId || !serviceId || !time) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const result = await db.query(
+ 
+    await db.query('BEGIN');
+
+  
+    const bookingResult = await db.query(
       `INSERT INTO bookings (user_id, provider_id, service_id, time, status)
        VALUES ($1, $2, $3, $4, 'confirmed')
        RETURNING *`,
       [userId, providerId, serviceId, time]
     );
 
-    if (result.rows.length > 0) {
-      return res.status(201).json({ booking: result.rows[0] });
-    } else {
-      return res.status(409).json({ error: 'Booking already exists for this time' });
+    if (bookingResult.rows.length === 0) {
+      await db.query('ROLLBACK');
+      return res.status(409).json({ error: 'Failed to create booking' });
     }
+
+  
+    await db.query(
+      `UPDATE availability
+       SET is_booked = TRUE
+       WHERE provider_id = $1 AND start_time = $2`,
+      [providerId, time]
+    );
+
+    await db.query('COMMIT');
+    return res.status(201).json({ booking: bookingResult.rows[0] });
+
   } catch (err: any) {
+    await db.query('ROLLBACK');
     console.error('Error creating booking:', err.message, err.stack);
     return res.status(500).json({ error: 'Failed to create booking' });
   }
 };
+
 
 
 
