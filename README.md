@@ -7,7 +7,7 @@
 ![Vercel](https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)
 
-A **web-based wellness platform** where users can book 1:1 sessions with vetted practitioners. The focus is on developing streamlined Progressive Web App (PWA) experience.
+
 
 > **Note**: This test project is a **work in progress**. Though functional locally, the deployed application is still undergoing testing ([View current build](https://wellness2k25.vercel.app/) and features are still being implemented and tested. Some functionality is still being refined and added, and the README will be updated accordingly.
 
