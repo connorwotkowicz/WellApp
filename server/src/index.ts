@@ -25,7 +25,7 @@ const PORT = parseInt(process.env.PORT || '3001', 10);
 
 const allowedOrigins = [
   'http://localhost:3000',          
-  'https://welness2k.app.vercel.app', 
+  'https://wellness2k.app.vercel.app', 
   'https://rorodev.ngrok.app'      
 ];
 
