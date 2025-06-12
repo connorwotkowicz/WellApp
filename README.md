@@ -49,17 +49,7 @@ A **web-based wellness platform** where users can book 1:1 sessions with vetted 
 - Manage bookings (update status, delete bookings)
 - Admin dashboard for data viewing/export (protected)
 
----
 
-## Work in Progress
-
-This application is still under active development, and the following features are either in progress or upcoming:
-
-1. **Admin dashboard**: Admins can manage users, services, and bookings. 
-2. **Availability calendar**: Feature to manage availability will be added in the future.
-3. **Stripe payment integration**: Ongoing debugging of Stripe integration for booking payments.
-4. **UI/UX Tweaks**: Some final touch-ups will be made to solidify visual flow, but the overall design is polished and functional.
-5. **Post-launch support**: Roadmap for support will be outlined once MVP is finalized.
 
 ---
 
