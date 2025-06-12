@@ -39,9 +39,9 @@
 
 ### Authentication & Security
 - JWT authentication
-> Google OAuth
+- > Google OAuth
 - Bcrypt for password hashing
-> Helmet
+- > Helmet
 - CORS
 
 ### Payments
@@ -53,14 +53,14 @@
 - ngrok for local testing
 - Vercel (frontend)
 - AWS EC2 (backend)
-> Render if needed
+- > Render if needed
 - Supabase (database)
 - Axios
 
 ### Testing
-> Jest
+- > Jest
 - React Testing Library
-> Supertest
+- > Supertest
 
 
 ---
