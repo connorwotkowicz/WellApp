@@ -9,6 +9,9 @@
 ![Stripe](https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![AWS EC2](https://img.shields.io/badge/AWS%20EC2-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
+
 
 
 
@@ -39,7 +42,7 @@
 
 ### Authentication & Security
 - JWT authentication
-- Google OAuth
+- > Google OAuth
 - Bcrypt for password hashing
 - Helmet
 - CORS
@@ -51,11 +54,15 @@
 
 ### Dev Tools & Deployment
 - ngrok for local testing
-- Vercel (frontend)
-- AWS EC2 (backend)
-- > Render if needed
-- Supabase (database)
+- Vercel (frontend hosting)
+- AWS EC2 (backend hosting)
+  - Ubuntu 22.04
+  - Node.js, PM2 
+  - PostgreSQL client
+- Supabase 
 - Axios
+- > Render (optional fallback hosting)
+
 
 ### Testing
 - > Jest
