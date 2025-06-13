@@ -15,46 +15,48 @@ const userRoutes = require('./routes/userRoutes');
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-console.log('JWT_SECRET:', process.env.JWT_SECRET);
-
-const app = express();
+const app = express(); 
 const PORT = parseInt(process.env.PORT || '3001', 10);
-
 
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://wellness2k.app.vercel.app',
+  'https://wellness2k25.vercel.app',
   'https://rorodev.ngrok.app'
 ];
 
-
 const allowedPatterns = [
-  /^https:\/\/wellness2k25-.*\.vercel\.app$/,
-  /^https:\/\/.*-connorwotkowiczs-projects\.vercel\.app$/
+  /^https:\/\/(.*\.)?wellness2k25\.vercel\.app$/, 
+  /^https:\/\/(.*\.)?connorwotkowiczs-projects\.vercel\.app$/,
+  /^https:\/\/(.*\.)?vercel\.app$/, 
+  /^https:\/\/[a-z0-9-]+\.ngrok\.(io|app)$/ 
 ];
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-
     if (!origin) return callback(null, true);
-  
-    if (allowedOrigins.includes(origin)) {
+    
+   
+    if (allowedOrigins.includes(origin) || 
+        allowedPatterns.some(pattern => pattern.test(origin))) {
       return callback(null, true);
     }
-    if (allowedPatterns.some(pattern => pattern.test(origin))) {
-      return callback(null, true);
-    }
-    callback(null, false);
+    
+    console.error(`CORS blocked: ${origin}`);  
+    callback(new Error(`Origin ${origin} not allowed by CORS`));
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 };
 
-app.use(helmet());
-app.use(cors(corsOptions));
+app.use(cors(corsOptions));  
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginResourcePolicy: false
+}));
 app.use(express.json());
-
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'Wellness API is up!' });

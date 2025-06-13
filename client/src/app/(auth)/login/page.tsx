@@ -20,7 +20,7 @@ interface LoginResponse {
   };
 }
 
-// Fallback type guard for axios error
+
 function isAxiosErrorWithMessage(err: unknown): err is { response: { data: { message?: string } } } {
   return (
     typeof err === 'object' &&
