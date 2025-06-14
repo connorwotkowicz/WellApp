@@ -15,7 +15,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
       FROM providers p
       ORDER BY p.id
     `);
-    res.status(200).json(result.rows);  // Return the provider data
+    res.status(200).json(result.rows);  
   } catch (err) {
     console.error('Error fetching providers:', err);
     res.status(500).json({ error: 'Failed to fetch providers' });

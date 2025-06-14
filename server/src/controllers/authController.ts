@@ -11,7 +11,7 @@ interface User {
   role: string;
 }
 
-// Helper to extract database info
+
 const getDbInfo = () => {
   const dbUrl = process.env.DATABASE_URL || '';
   try {
@@ -34,7 +34,6 @@ const getDbInfo = () => {
   }
 };
 
-// Type guard to check if value is an Error
 const isError = (error: unknown): error is Error => {
   return error instanceof Error;
 };
@@ -45,7 +44,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 
   try {
 
-    console.log('📝 Registration attempt:', {
+    console.log('Registration attempt:', {
       email,
       role,
       database: dbInfo.database,
@@ -54,14 +53,14 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
     });
 
     if (!['user', 'admin', 'provider'].includes(role)) {
-      console.error(`❌ Invalid role attempt: ${role} in ${dbInfo.database}`);
+      console.error(`Invalid role attempt: ${role} in ${dbInfo.database}`);
       res.status(400).json({ error: 'Invalid role. Valid roles are user, admin, and provider.' });
       return;
     }
 
     const existing = await db.query('SELECT * FROM users WHERE email = $1', [email]);
     if (existing.rows.length > 0) {
-      console.error(`❌ User already exists in ${dbInfo.database}: ${email}`);
+      console.error(`User already exists in ${dbInfo.database}: ${email}`);
       res.status(409).json({ error: 'User already exists' });
       return;
     }
@@ -74,7 +73,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
     );
 
     const user = newUser.rows[0];
-    console.log('✅ User registered successfully:', {
+    console.log('User registered successfully:', {
       userId: user.id,
       email: user.email,
       database: dbInfo.database,
@@ -88,14 +87,14 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         'INSERT INTO providers (name, id, specialty, bio) VALUES ($1, $2, $3, $4)',
         [name, user.id, specialty, bio]
       );
-      console.log(`👨‍⚕️ Provider profile created in ${dbInfo.database} for user: ${user.id}`);
+      console.log(` Provider profile created in ${dbInfo.database} for user: ${user.id}`);
     }
 
     const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET!, { expiresIn: '7d' });
 
     res.status(201).json({ user, token });
   } catch (error) {
-    console.error('❌ Registration failed:', {
+    console.error('Registration failed:', {
       error: isError(error) ? error.message : 'Unknown error',
       database: dbInfo.database,
       host: dbInfo.host,
@@ -109,21 +108,21 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
   const { email, password } = req.body;
   const dbInfo = getDbInfo();
 
-  console.log('🔑 Login attempt:', { email, database: dbInfo.database });
+  console.log('Login attempt:', { email, database: dbInfo.database });
 
   try {
     const userResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
     const user = userResult.rows[0];
 
     if (!user) {
-      console.error(`❌ Login failed: User not found in ${dbInfo.database} - ${email}`);
+      console.error(`Login failed: User not found in ${dbInfo.database} - ${email}`);
       res.status(401).json({ error: 'Invalid credentials' });
       return;
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      console.error(`❌ Login failed: Password mismatch in ${dbInfo.database} for ${email}`);
+      console.error(` Login failed: Password mismatch in ${dbInfo.database} for ${email}`);
       res.status(401).json({ error: 'Invalid credentials' });
       return;
     }
@@ -134,7 +133,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
       { expiresIn: '7d' }
     );
 
-    console.log('🔓 Login successful:', {
+    console.log('Login successful:', {
       userId: user.id,
       email: user.email,
       database: dbInfo.database
@@ -150,7 +149,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
       token,
     });
   } catch (err) {
-    console.error('❌ Login error:', {
+    console.error('Login error:', {
       error: isError(err) ? err.message : 'Unknown error',
       database: dbInfo.database,
       host: dbInfo.host
