@@ -21,7 +21,7 @@ const ManageUsers: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users');
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users`);
   const data = response.data as User[];
 setUsers(data);
 

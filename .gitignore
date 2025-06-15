@@ -36,3 +36,6 @@ restart.sh
 generate-hash.js
 stack.sh
 corstest.js
+*.env.local
+*.env
+

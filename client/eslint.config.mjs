@@ -16,6 +16,7 @@ const eslintConfig = [
   "plugin:react-hooks/recommended",
   "plugin:jsx-a11y/recommended", 
   "prettier", 
+ 
 ];
 
 module.exports = eslintConfig;

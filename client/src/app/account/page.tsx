@@ -6,15 +6,24 @@ import { AuthContext } from '../context/AuthContext';
 
 interface Booking {
   id: string;
-  time: string;
-  providerName: string;
-  userId: string;
+  booking_date: string;  
+  provider: { name: string };
+  service: { name: string };  
+}
+
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  address: string | null;
+  phone: string | null;
 }
 
 export default function AccountPage() {
-  const { user, token, logout, initialized } = useContext(AuthContext);
+  const { user: contextUser, token, logout, initialized } = useContext(AuthContext);
   const router = useRouter();
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,16 +33,36 @@ export default function AccountPage() {
       return;
     }
 
-    if (!initialized) return;
+    if (!initialized || !token) return;
 
-    async function fetchBookings() {
+    async function fetchAccountData() {
       try {
-        const res = await fetch('/api/bookings', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!res.ok) throw new Error('Failed to fetch bookings');
-        const data: Booking[] = await res.json();
-        setBookings(data);
+        setLoading(true);
+        setError(null);
+        
+     
+        const userRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/me`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        
+        if (!userRes.ok) throw new Error('Failed to fetch user profile');
+        const userData: UserProfile = await userRes.json();
+        setUserProfile(userData);
+        
+     
+        const bookingsRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/bookings/user`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        
+        if (!bookingsRes.ok) throw new Error('Failed to fetch bookings');
+        const bookingsData: Booking[] = await bookingsRes.json();
+        setBookings(bookingsData);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -41,7 +70,7 @@ export default function AccountPage() {
       }
     }
 
-    fetchBookings();
+    fetchAccountData();
   }, [initialized, token, router]);
 
   if (!initialized) return <p>Loading...</p>;
@@ -51,7 +80,9 @@ export default function AccountPage() {
     <div className="account-page">
       <section className="stripe default greeting-stripe">
         <div className="account-wrapper greeting-wrap">
-          <h2 className="account-title">Welcome, {user?.name ?? 'User'}!</h2>
+         <h2 className="account-title">
+  Welcome, {contextUser?.name || 'User'}!
+</h2>
           <hr />
           <button
             className="signout-button"
@@ -62,7 +93,9 @@ export default function AccountPage() {
           >
             Sign out
           </button>
-          <p className="sub-greeting">You’re signed in with {user?.email}</p>
+          <p className="sub-greeting">
+            You're signed in with {userProfile?.email || contextUser?.email}
+          </p>
         </div>
       </section>
 
@@ -77,10 +110,13 @@ export default function AccountPage() {
               {bookings.map((b) => (
                 <li key={b.id} className="booking-card">
                   <span>
-                    <strong>Provider:</strong> {b.providerName}
+                    <strong>Provider:</strong> {b.provider?.name || 'Unknown'}
                   </span>
                   <span>
-                    <strong>Time:</strong> {new Date(b.time).toLocaleString()}
+                    <strong>Service:</strong> {b.service?.name || 'Unknown'}
+                  </span>
+                  <span>
+                    <strong>Time:</strong> {new Date(b.booking_date).toLocaleString()}
                   </span>
                 </li>
               ))}
@@ -96,21 +132,19 @@ export default function AccountPage() {
             <div className="settings-columns">
               <div className="settings-block">
                 <h4>Address</h4>
-                <p>{(user as any)?.address || 'No address added'}</p>
+                <p>{userProfile?.address || 'No address added'}</p>
               </div>
               <div className="settings-block">
                 <h4>Contact Info</h4>
                 <p>
-                  <a>
-                    <strong>Email: </strong>
-                  </a>
-                  <span className="contact-info">{user?.email}</span>
-                  <br />
-                  <a>
-                    <strong>Phone: </strong>
-                  </a>
+                  <strong>Email: </strong>
                   <span className="contact-info">
-                    {(user as any)?.phone || 'No phone number added'}
+                    {userProfile?.email || contextUser?.email}
+                  </span>
+                  <br />
+                  <strong>Phone: </strong>
+                  <span className="contact-info">
+                    {userProfile?.phone || 'No phone number added'}
                   </span>
                 </p>
               </div>

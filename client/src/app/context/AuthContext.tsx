@@ -4,7 +4,7 @@ import React, { createContext, useState, useEffect } from 'react';
 
 export interface User {
   email: string;
-  name?: string;
+  name: string; 
   profilePic?: string;
   user_role: string;
 }
@@ -33,21 +33,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedEmail = localStorage.getItem('userEmail');
+    const storedName = localStorage.getItem('userName'); 
     const storedProfilePic = localStorage.getItem('profilePic');
     const storedUserRole = localStorage.getItem('userRole');
 
     console.log('Stored user data from localStorage:', {
       storedToken,
       storedEmail,
+      storedName,
       storedProfilePic,
       storedUserRole,
     });
 
-    
     if (storedToken && storedEmail) {
       setToken(storedToken);
       setUser({
         email: storedEmail,
+        name: storedName || 'User', 
         profilePic: storedProfilePic || '',
         user_role: storedUserRole || 'user',
       });
@@ -56,38 +58,44 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setInitialized(true); 
   }, []);
 
-const login = (userData: User, token: string) => {
-  console.log('Logging in with user data:', userData);
+  const login = (userData: User, token: string) => {
+    console.log('Logging in with user data:', userData);
 
-  setUser({
-    ...userData,
-    profilePic: userData.profilePic || '',
-    user_role: userData.user_role || 'user',
-  });
+    
+    const userName = userData.name || 'User';
+    
+    setUser({
+      ...userData,
+      name: userName,
+      profilePic: userData.profilePic || '',
+      user_role: userData.user_role || 'user',
+    });
 
-  setToken(token);
+    setToken(token);
 
-  localStorage.setItem('token', token);
-  localStorage.setItem('userEmail', userData.email);
-  localStorage.setItem('profilePic', userData.profilePic || '');
-  localStorage.setItem('userRole', userData.user_role || 'user');
+    localStorage.setItem('token', token);
+    localStorage.setItem('userEmail', userData.email);
+    localStorage.setItem('userName', userName); 
+    localStorage.setItem('profilePic', userData.profilePic || '');
+    localStorage.setItem('userRole', userData.user_role || 'user');
 
-  console.log('Stored user data in localStorage:', {
-    token: localStorage.getItem('token'),
-    userEmail: localStorage.getItem('userEmail'),
-    profilePic: localStorage.getItem('profilePic'),
-    userRole: localStorage.getItem('userRole'),
-  });
+    console.log('Stored user data in localStorage:', {
+      token: localStorage.getItem('token'),
+      userEmail: localStorage.getItem('userEmail'),
+      userName: localStorage.getItem('userName'), 
+      profilePic: localStorage.getItem('profilePic'),
+      userRole: localStorage.getItem('userRole'),
+    });
 
-
-  setInitialized(true);
-};
+    setInitialized(true);
+  };
 
   const logout = () => {
     setUser(null);
     setToken(null);
     localStorage.removeItem('token');
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
     localStorage.removeItem('profilePic');
     localStorage.removeItem('userRole');
   };

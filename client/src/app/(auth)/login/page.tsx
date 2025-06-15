@@ -60,9 +60,7 @@ export default function Login() {
         throw new Error('Invalid login response');
       }
 
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userEmail', data.user.email);
-      localStorage.setItem('userRole', data.user.user_role);
+   
 
       login(data.user, data.token);
 

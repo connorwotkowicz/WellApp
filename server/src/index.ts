@@ -1,7 +1,9 @@
 import dotenv from 'dotenv';
-import express from 'express';
+import express, { Request, Response } from 'express'; 
 import cors from 'cors';
 import path from 'path';
+import db from './db'; 
+
 
 import providerRoutes from './routes/providerRoutes';
 import serviceRoutes from './routes/serviceRoutes';
@@ -10,10 +12,16 @@ import bookingRoutes from './routes/bookingRoutes';
 import authRoutes from "./routes/authRoutes";
 import helmet from 'helmet';
 import availabilityRoutes from './routes/availabilityRoutes';
+
+
 const checkoutRoutes = require('./routes/checkout');
 const userRoutes = require('./routes/userRoutes');
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+console.log('Environment:', process.env.NODE_ENV);
+console.log('Database Host:', process.env.DATABASE_URL?.split('@')[1]?.split(':')[0]);
+console.log('Backend URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
 
 const app = express(); 
 const PORT = parseInt(process.env.PORT || '3001', 10);
@@ -35,7 +43,6 @@ const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
     
-   
     if (allowedOrigins.includes(origin) || 
         allowedPatterns.some(pattern => pattern.test(origin))) {
       return callback(null, true);
@@ -58,7 +65,45 @@ app.use(helmet({
 }));
 app.use(express.json());
 
-app.get('/api/health', (req, res) => {
+interface AvailabilityRequest extends Request {
+  params: {
+    providerId: string;
+  };
+}
+
+app.get('/api/providers/:providerId/availability', async (req: AvailabilityRequest, res: Response) => {
+  try {
+    const { providerId } = req.params;
+    
+   
+    const availabilityResult = await db.query(
+      'SELECT * FROM availability WHERE provider_id = $1 ORDER BY start_time ASC',
+      [providerId]
+    );
+    
+  
+    const bookingsResult = await db.query(
+      'SELECT time FROM bookings WHERE provider_id = $1',
+      [providerId]
+    );
+    
+   
+    const bookedSlots = bookingsResult.rows.map((b: any) => b.time.toISOString());
+    const availableSlots = availabilityResult.rows.filter((slot: any) => 
+      !bookedSlots.includes(slot.start_time.toISOString())
+    );
+    
+    res.status(200).json({
+      provider_id: providerId,
+      availability: availableSlots
+    });
+  } catch (err: unknown) {
+    console.error('Error fetching availability:', err);
+    res.status(500).json({ error: 'Failed to fetch availability' });
+  }
+});
+
+app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'Wellness API is up!' });
 });
 
@@ -71,7 +116,7 @@ app.use('/api/checkout', checkoutRoutes);
 app.use('/api/payment', paymentRoutes); 
 app.use('/api/availability', availabilityRoutes);
 
-app.get('/api/test', (_req, res) => {
+app.get('/api/test', (_req: Request, res: Response) => {
   res.json({ message: 'Backend is alive!' });
 });
 

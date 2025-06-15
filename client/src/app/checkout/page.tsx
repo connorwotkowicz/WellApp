@@ -3,10 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
+import { Stripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PaymentForm from '../components/PaymentForm';
 import { BillingInfo } from './types'; 
 import { getUserIdFromToken } from '../../utils/getUserIdFromToken'; 
+import { getProviderAvailability } from '../../utils/api';
+import { createBooking } from '../../utils/api';
+
+
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 
@@ -28,18 +33,28 @@ const CheckoutPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [provider, setProvider] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-const [availableSlots, setAvailableSlots] = useState<any[]>([]);
-const [selectedSlot, setSelectedSlot] = useState<string>(''); 
-const [providerId, setProviderId] = useState<string | null>(null);
-
-  
+  const [availableSlots, setAvailableSlots] = useState<AvailabilitySlot[]>([]);
+  const [selectedSlot, setSelectedSlot] = useState<string>(''); 
+  const [providerId, setProviderId] = useState<string | null>(null);
   const [showSummary, setShowSummary] = useState(false);
+  const [serviceDetails, setServiceDetails] = useState<any>(null); 
+   const [selectedProvider, setSelectedProvider] = useState<any>(null);
+  const [selectedService, setSelectedService] = useState<any>(null);
+
+interface AvailabilitySlot {
+  id: number;
+  provider_id: number;
+  start_time: string;
+  end_time: string;
+  booked: boolean;
+  booked_by: number | null;
+  created_at: string;
+  updated_at: string;
+}
 
 
 
 
-
-  
   useEffect(() => {
     const user = getUserIdFromToken();
     setUserId(user ? parseInt(user, 10) : null);  
@@ -50,13 +65,37 @@ const [providerId, setProviderId] = useState<string | null>(null);
       setCurrentStep(storedStep);
     }
 
- const providerData = localStorage.getItem('selectedProvider');
-  if (providerData) {
-    setProvider(JSON.parse(providerData));  
-  } else {
-    router.push('/bookings');  
-  }
-}, [router]);
+    const providerData = localStorage.getItem('selectedProvider');
+    if (providerData) {
+      const parsedProvider = JSON.parse(providerData);
+      setProvider(parsedProvider);  
+    } else {
+      router.push('/bookings');  
+    }
+  }, [router]);
+
+  useEffect(() => {
+    const fetchServiceDetails = async () => {
+      if (provider && provider.service_id) {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/services/${provider.service_id}`
+          );
+          if (response.ok) {
+            const serviceData = await response.json();
+            setServiceDetails(serviceData);
+          }
+        } catch (error) {
+          console.error('Error fetching service details:', error);
+        }
+      }
+    };
+
+    if (provider) {
+      fetchServiceDetails();
+    }
+  }, [provider]);
+
 
 
 
@@ -65,12 +104,53 @@ useEffect(() => {
   const pid = queryParams.get('providerId');
   if (pid) {
     setProviderId(pid);
-    fetch(`/api/availability/${pid}`)
-      .then((res) => res.json())
-      .then((slots) => setAvailableSlots(slots))
-      .catch((err) => console.error('Error fetching slots:', err));
+    getProviderAvailability(pid) 
+      .then(slots => setAvailableSlots(slots as AvailabilitySlot[])) 
+      .catch(err => {
+        console.error('Error fetching slots:', err);
+        setError('Failed to load available time slots');
+      });
   }
 }, []);
+
+
+useEffect(() => {
+  const fetchBookingData = async () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const providerId = queryParams.get('providerId');
+    const serviceId = queryParams.get('serviceId');
+    
+    if (!providerId || !serviceId) {
+      router.push('/bookings');
+      return;
+    }
+    
+    try {
+     
+      const [providerRes, serviceRes] = await Promise.all([
+        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/providers/${providerId}`),
+        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/services/${serviceId}`)
+      ]);
+      
+      if (!providerRes.ok || !serviceRes.ok) {
+        throw new Error('Failed to fetch booking data');
+      }
+      
+      const providerData = await providerRes.json();
+      const serviceData = await serviceRes.json();
+      
+      setProvider(providerData);
+      setServiceDetails(serviceData);
+      
+    } catch (error) {
+      console.error('Error fetching booking data:', error);
+      setError('Failed to load booking information');
+    }
+  };
+  
+  fetchBookingData();
+}, [router]);
+
 
 
 
@@ -103,7 +183,6 @@ useEffect(() => {
   };
 
   const handleBillingContinue = () => {
-  
     if (!billingName.trim()) {
       setError('Please enter your full name');
       return;
@@ -147,41 +226,39 @@ useEffect(() => {
     setError(null);
   };
 
-const handlePaymentSuccess = async () => {
-  try {
-    const storedProvider = localStorage.getItem('selectedProvider');
-    if (!storedProvider) return;
+  const handlePaymentSuccess = async () => {
+    try {
+      const storedProvider = localStorage.getItem('selectedProvider');
+      if (!storedProvider) return;
 
-    const provider = JSON.parse(storedProvider);
+      const provider = JSON.parse(storedProvider);
 
-    const bookingResponse = await fetch('/api/bookings/create-booking', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        providerId: provider.id,
-        serviceId: provider.service_id || 1, 
-        time: selectedTime,
-        userId: userId, 
-      }),
-    });
+      const bookingResponse = await fetch('/api/bookings/create-booking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          providerId: provider.id,
+          serviceId: provider.service_id || 1, 
+          time: selectedTime,
+          userId: userId || 0, 
+        }),
+      });
 
-    const bookingData = await bookingResponse.json();
-    console.log('Booking created:', bookingData);
-  } catch (err) {
-    console.error('Failed to create booking after payment:', err);
-  }
-
-  router.push('/checkout/success');
-};
-
+      const bookingData = await bookingResponse.json();
+       router.push('/checkout/success');
+      console.log('Booking created:', bookingData);
+      
+    } catch (err) {
+      console.error('Failed to create booking after payment:', err);
+    }
+  };
 
   const handlePaymentCancel = () => {
     router.push('/checkout/cancel');
   };
 
-  
   const handleBack = () => {
     if (currentStep === 'payment') {
       setCurrentStep('billing');
@@ -247,20 +324,34 @@ const handlePaymentSuccess = async () => {
     }
   };
 
-  const billingInfo: BillingInfo = {
-    name: billingName,           
-    billingName,               
-    addressLine1,
-    addressLine2: addressLine2 || undefined, 
-    city,
-    state: billingState,
-    zip,
-    email: isGuest ? guestEmail : '',
-    phone,
-    billingState,               
-    guestEmail: isGuest ? guestEmail : '', 
+const billingInfo: BillingInfo = {
+  billingName: billingName,
+  addressLine1: addressLine1,
+  addressLine2: addressLine2 || undefined,
+  city: city,
+  billingState: billingState,
+  zip: zip,
+  guestEmail: isGuest ? guestEmail : '',
+  phone: phone
+};
+
+  const handleSlotChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const slotValue = e.target.value;
+    setSelectedSlot(slotValue);
+    
+    if (slotValue) {
+      const slotDateTime = new Date(slotValue);
+      const date = slotDateTime.toISOString().split('T')[0];
+      const time = slotDateTime.toTimeString().substring(0, 5);
+      
+      setSelectedDate(date);
+      setSelectedTime(time);
+    }
   };
 
+
+  const displayPrice = serviceDetails?.price ?? provider?.price;
+  
   return (
     <div className="checkout-page">
       {error && (
@@ -272,32 +363,34 @@ const handlePaymentSuccess = async () => {
 
       {provider && (
         <div className="checkout-container">
-          
           <div className='checkout-header'>
-
-            
             <h1 className='checkout-title'>Checkout</h1>
-
-        
-
-            <button className='order-summary-toggle' onClick={() => setShowSummary(!showSummary)}>
-              {showSummary ? 'Hide Order Summary' : `Show Order Summary: $${provider.price}`}
+            <button 
+              className='order-summary-toggle' 
+              onClick={() => setShowSummary(!showSummary)}
+            >
+              {showSummary ? 'Hide Order Summary' : `Show Order Summary: $${displayPrice ?? '0.00'}`}
             </button>
           </div>
-              <div>
-             <span><strong>Instructor: </strong></span>
-                    <span>{provider.name}</span>
-                  </div>
-                  <div className='summary-line'>
-                
-                    <span>{provider.service || 'Not available'}</span>
-                  </div>
+          
+          <div className="service-info">
+            <div className="service-info-item">
+              <strong>Instructor: </strong>
+              <span>{provider.name}</span>
+            </div>
+            <div className="service-info-item">
+              <strong>Session: </strong>
+              <span>{serviceDetails?.service_name || provider.service || 'Not available'}</span>
+            </div>
+          </div>
 
-               {currentStep !== 'date' && (
+          {currentStep !== 'date' && (
             <button className="back-modal-button" onClick={handleBack}>
               Back
             </button>
           )}
+          
+          {/* Order Summary Panel */}
           {showSummary && (
             <div className='summary-overlay' onClick={() => setShowSummary(false)}>
               <div className='order-summary-panel' onClick={(e) => e.stopPropagation()}>
@@ -306,66 +399,86 @@ const handlePaymentSuccess = async () => {
                     <h4 className='summary-title'>Your Order Total</h4>
                     <div className='summary-items-row'>
                       <span className='summary-items'></span>
-            
                     </div>
                   </div>
 
                   <div className='summary-divider' />
+                  
                   <div className='summary-line'>
                     <span><strong>Provider</strong></span>
                     <span>{provider.name}</span>
                   </div>
+                  
                   <div className='summary-line'>
                     <span><strong>Session</strong></span>
-                    <span>{provider.service || 'Not available'}</span>
+                    <span>{serviceDetails?.service_name || provider.service || 'Not available'}</span>
                   </div>
+                  
                   <div className='summary-line'>
                     <span><strong>Specialty</strong></span>
-                    <span>{provider.specialty || 'Not available'}</span>
+                    <span>{serviceDetails?.specialty || provider.specialty || 'Not available'}</span>
                   </div>
-                <div className='summary-line'>
-          <span><strong>Info</strong></span>
-          <span>{provider.description || 'No description available'}</span>
-        </div>
-        <div className='summary-line'>
-          
-          <span><strong>Date & Time</strong></span>
-          <span>{selectedDate} at {selectedTime}</span>
-        </div>
-        <div className='summary-line'>
-          <span><strong>Duration</strong></span>
-          <span>{provider.duration} minutes</span>  
-        </div>
+                  
+                  <div className='summary-line'>
+                    <span><strong>Description</strong></span>
+                    <span>{serviceDetails?.description || provider.description || 'No description available'}</span>
+                  </div>
+                  
+                  <div className='summary-line'>
+                    <span><strong>Date & Time</strong></span>
+                    <span>{selectedDate} at {selectedTime}</span>
+                  </div>
+                  
+                  <div className='summary-line'>
+                    <span><strong>Duration</strong></span>
+                    <span>
+                      {serviceDetails?.duration 
+                        ? `${serviceDetails.duration} minutes` 
+                        : provider.duration 
+                          ? `${provider.duration} minutes` 
+                          : 'N/A'
+                      }
+                    </span>
+                  </div>
 
-        {availableSlots.length > 0 && (
-  <div className="slot-picker">
-    <label>Select a time slot:</label>
-    <select value={selectedSlot} onChange={(e) => setSelectedSlot(e.target.value)}>
-      <option value="">-- Select --</option>
-      {availableSlots.map((slot) => (
-        <option key={slot.id} value={slot.start_time}>
-          {new Date(slot.start_time).toLocaleString()}
-        </option>
-      ))}
-    </select>
-  </div>
-)}
+                  {availableSlots.length > 0 && (
+                    <div className="slot-picker">
+                      <label>Select a time slot:</label>
+                      <select 
+                        value={selectedSlot} 
+                        onChange={handleSlotChange}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <option value="">-- Select --</option>
+                        {availableSlots.map((slot) => (
+                          <option key={slot.id} value={slot.start_time}>
+                            {new Date(slot.start_time).toLocaleString()}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
 
                   <div className='summary-line'>
                     <span>Subtotal</span>
-                    <span>${provider.price}</span>
+                    <span>${displayPrice ?? '0.00'}</span>
                   </div>
              
                   <div className='summary-line muted'>
                     <span>Tax</span>
                     <span>TBD</span>
                   </div>
+                  
                   <div className='summary-total'>
                     <span><strong>Order total</strong></span>
-                    <strong>${provider.price}</strong>
+                    <strong>${displayPrice ?? '0.00'}</strong>
                   </div>
                 </div>
-                <button className='close-summary' onClick={() => setShowSummary(false)}>
+                
+                <button 
+                  className='close-summary' 
+                  onClick={() => setShowSummary(false)}
+                >
                   ✕
                 </button>
               </div>
@@ -375,6 +488,7 @@ const handlePaymentSuccess = async () => {
           {currentStep === 'date' && (
             <section className="date-time-selection">
               <h3>Select your session date and time:</h3>
+              
               <div className="form-group">
                 <label>Session Date*</label>
                 <input
@@ -474,12 +588,12 @@ const handlePaymentSuccess = async () => {
 
                 <div className="form-group">
                   <label>Phone Number*</label>
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
-                    required
-                  />
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
+                      required
+                    />
                 </div>
 
                 {isGuest && (
@@ -507,55 +621,45 @@ const handlePaymentSuccess = async () => {
             </>
           )}
 
-
-{currentStep === 'payment' && (
-  <section className="bottom-checkout-container">
-    <div className="billing-summary">
-      <div className="summary-box">
-        <h3 className="summary-title">Your Info</h3>
-        <div className="summary-divider" />
-        <h4>Billing Information</h4>
-        <div className="summary-line">
-          <p><strong>Name:</strong> {billingName}</p>
-        </div>
-        <p><strong>Address:</strong> {addressLine1}{addressLine2 && `, ${addressLine2}`}</p>
-        <p><strong>City/State/Zip:</strong> {city}, {billingState} {zip}</p>
-        {isGuest && <p><strong>Email:</strong> {guestEmail}</p>}
-        <p><strong>Phone:</strong> {phone}</p>
-      </div>
-    </div>
-
-
-  
-    <div className="payment-container">
-      <div className="payment-options">
-     
-        
-       
-     
-
-
-    
-        <Elements stripe={stripePromise}>
-          <PaymentForm
-            billingInfo={billingInfo}
-            onSuccess={handlePaymentSuccess}
-            onCancel={handlePaymentCancel}
-            onProceedToPayment={handleProceedToPayment}
-            isProcessing={isProcessing}
-          />
-        </Elements>
-        
-      </div>
-         <div className="details">
-            Secure checkout powered by Stripe.
-          </div>
-    </div>
-  
-  </section>
-)}
-
-
+          {currentStep === 'payment' && (
+            <section className="bottom-checkout-container">
+              <div className="billing-summary">
+                <div className="summary-box">
+                  <h3 className="summary-title">Your Info</h3>
+                  <div className="summary-divider" />
+                  <h4>Billing Information</h4>
+                  <div className="summary-line">
+                    <p><strong>Name:</strong> {billingName}</p>
+                  </div>
+                  <p><strong>Address:</strong> {addressLine1}{addressLine2 && `, ${addressLine2}`}</p>
+                  <p><strong>City/State/Zip:</strong> {city}, {billingState} {zip}</p>
+                  {isGuest && <p><strong>Email:</strong> {guestEmail}</p>}
+                  <p><strong>Phone:</strong> {phone}</p>
+                </div>
+              </div>
+      <div className="payment-container">
+            <div className="payment-options">
+              <Elements stripe={stripePromise}>
+<PaymentForm
+  amount={Number(displayPrice || 0)}
+  billingInfo={billingInfo}
+  onSuccess={handlePaymentSuccess}
+  onCancel={handlePaymentCancel}
+  onProceedToPayment={handleProceedToPayment}
+  isProcessing={isProcessing}
+  provider={provider}
+  selectedTime={selectedTime}
+  userId={userId}
+  stripePromise={stripePromise}
+/>
+              </Elements>
+            </div>
+                <div className="details">
+                  Secure checkout powered by Stripe.
+                </div>
+              </div>
+            </section>
+          )}
         </div>
       )}
     </div>

@@ -1,7 +1,11 @@
 import express, { Request, Response } from 'express';
 import db from '../db';
+import { getProviderById } from '../controllers/providerController';
 
 const router = express.Router();
+
+
+
 
 router.get('/', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -23,6 +27,8 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
 });
 
 
+router.get('/:id', getProviderById);
+
 router.get('/:id', async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await db.query(
@@ -39,6 +45,7 @@ router.get('/:id', async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ error: 'Failed to fetch provider' });
   }
 });
+
 
 
 router.put('/:id/status', async (req: Request, res: Response): Promise<void> => {
@@ -107,5 +114,13 @@ router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ error: 'Failed to delete provider' });
   }
 });
+
+
+
+
+
+
+
+
 
 export default router;
