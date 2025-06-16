@@ -15,7 +15,7 @@
 
 
 
-# Fuck this bullshit. 
+
 
 > **Note**: This test project is a work in progress. Though functional locally, the deployed application is still undergoing testing ([View current build](https://wellness2k25.vercel.app/)) and features are still being implemented and tested. Some functionality is still being refined and added, and the README will be updated accordingly.
 
