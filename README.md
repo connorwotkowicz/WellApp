@@ -1,4 +1,4 @@
-# WellApp
+# Wellness2k25
 ![Next.js](https://img.shields.io/badge/Next.js-000?style=for-the-badge&logo=next.js&logoColor=white)
 ![Express.js](https://img.shields.io/badge/Express.js-000?style=for-the-badge&logo=express&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
@@ -15,8 +15,6 @@
 
 
 
-
-
 > **Note**: This test project is a work in progress. Though functional locally, the deployed application is still undergoing testing ([View current build](https://wellness2k25.vercel.app/)) and features are still being implemented and tested. Some functionality is still being refined and added, and the README will be updated accordingly.
 
 ---
@@ -26,19 +24,18 @@
 > Grey items are planned or not yet completed.
 
 ### Frontend
-- Next.js 14 (App Router)
+- Next.js 14
 - React
 - TypeScript
 - Javascript
 - SCSS Modules
 - Context API for state management
-- React Router (prior to migration)
 
 ### Backend
 - Node.js
 - Express.js
 - RESTful API
-- PostgreSQL (hosted on Supabase)
+- PostgreSQL --> Supabase
 - pg + dotenv
 
 ### Authentication & Security
@@ -47,7 +44,6 @@
 - Bcrypt for password hashing
 - Helmet
 - CORS
-
 ### Payments
 - > Stripe Checkout and Stripe Elements
 - > Stripe Node SDK
