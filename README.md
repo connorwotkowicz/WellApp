@@ -24,20 +24,18 @@
 > Grey items are planned or not yet completed.
 
 ### Frontend
-- Next.js 14 (App Router)
+- Next.js 14
 - React
 - TypeScript
 - Javascript
 - SCSS Modules
 - Context API for state management
-- Vite (early development)
-- React Router (prior to migration)
 
 ### Backend
 - Node.js
 - Express.js
 - RESTful API
-- PostgreSQL (hosted on Supabase)
+- PostgreSQL --> Supabase
 - pg + dotenv
 
 ### Authentication & Security
