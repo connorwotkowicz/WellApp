@@ -32,7 +32,6 @@
 - Javascript
 - SCSS Modules
 - Context API for state management
-- Vite (early development)
 - React Router (prior to migration)
 
 ### Backend
@@ -48,6 +47,7 @@
 - Bcrypt for password hashing
 - Helmet
 - CORS
+
 ### Payments
 - > Stripe Checkout and Stripe Elements
 - > Stripe Node SDK
